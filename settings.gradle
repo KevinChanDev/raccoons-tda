@@ -1,0 +1,5 @@
+rootProject.name = 'raccoons-tda'
+include 'raccoons-tda-services'
+include 'raccoons-tda-clients'
+include 'raccoons-tda-api'
+
