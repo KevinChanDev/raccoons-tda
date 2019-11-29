@@ -17,7 +17,6 @@ public class AccessTokenRepository {
 
     public void prune(){
         final Instant time = Instant.now();
-
     }
 
 }

@@ -18,5 +18,6 @@ dependencies {
     implementation 'org.springframework.security:spring-security-core:5.2.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'de.mkammerer:argon2-jvm:2.6'
+    implementation project(':raccoons-tda-api')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

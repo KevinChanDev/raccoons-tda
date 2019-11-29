@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Controller
-public class TokenController {
+public class AccessTokenController {
 
     @Autowired
     private AuthService authService;
