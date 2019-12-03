@@ -16,7 +16,7 @@ public class OrderPositionResponses {
     }
 
     public static OrderPositionResponse getOrderPositionResponse(final TDAHttpResponse tdaHttpResponse){
-        System.out.println(new String(tdaHttpResponse.getBody()));
+        final String data = new String(tdaHttpResponse.getBody());
         return new OrderPositionResponse(TDAResponseStatus.SUCCESSFUL, null);
     }
 

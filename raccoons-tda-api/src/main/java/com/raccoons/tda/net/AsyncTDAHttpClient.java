@@ -4,9 +4,11 @@ import org.apache.http.client.utils.URIBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +60,17 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     @Override
     public CompletableFuture<TDAHttpResponse> post(String uri, Map<String, String> headers) {
         return post(uri, headers, new byte[0]);
+    }
+
+    @Override
+    public CompletableFuture<TDAHttpResponse> post(String uri, Map<String, String> headers, Map<String, Object> data) {
+        final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().POST(ofFormData(data)).uri(URI.create(uri));
+        if (headers != null) {
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                requestBuilder.header(entry.getKey(), entry.getValue());
+            }
+        }
+        return sendAsync(requestBuilder.build());
     }
 
     @Override
@@ -130,6 +143,19 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
                     return new TDAHttpResponse(statusCode, flattenedResponseHeaders, responseBody,
                             requestStartTime, System.currentTimeMillis());
                 });
+    }
+
+    private static HttpRequest.BodyPublisher ofFormData(Map<String, Object> data) {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            if (builder.length() > 0) {
+                builder.append("&");
+            }
+            builder.append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8));
+            builder.append("=");
+            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+        }
+        return HttpRequest.BodyPublishers.ofString(builder.toString());
     }
 
 }

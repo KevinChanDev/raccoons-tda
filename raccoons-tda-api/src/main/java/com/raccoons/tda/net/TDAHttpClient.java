@@ -11,6 +11,8 @@ public interface TDAHttpClient {
 
     CompletableFuture<TDAHttpResponse> post(String uri, Map<String, String> headers);
 
+    CompletableFuture<TDAHttpResponse> post(String uri, Map<String, String> headers, Map<String, Object> data);
+
     CompletableFuture<TDAHttpResponse> post(String uri, Map<String, String> headers, byte[] body);
 
     CompletableFuture<TDAHttpResponse> put(String uri, Map<String, String> headers);

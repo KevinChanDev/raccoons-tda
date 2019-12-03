@@ -7,18 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.springframework.web.util.UriUtils;
 
-import java.nio.charset.Charset;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
 @Controller
 public class OAuthController {
@@ -48,15 +42,12 @@ public class OAuthController {
     public CompletableFuture<ResponseEntity<Object>> callback(@RequestParam String code) {
         return CompletableFuture.supplyAsync(() -> {
             if (code != null) {
-                authService.authorize(code).thenApply(new Function<Map<String, String>, Object>() {
-                    @Override
-                    public Object apply(Map<String, String> stringStringMap) {
-                        System.out.println("response: " + stringStringMap);
-                        return "returned";
-                    }
-                });
+                authService.authorize(code).thenCompose(r -> {
+                    System.out.println("Access Token: " + r.getAccessToken());
+                    return authService.processUserOAuthToken(r);
+                }).thenApply(s -> null);
             }
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.ok().build();
         });
     }
 }

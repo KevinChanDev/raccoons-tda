@@ -28,7 +28,11 @@ public class HttpService {
         tdaHttpClient = new AsyncTDAHttpClient(threadPoolTaskScheduler.getScheduledExecutor());
     }
 
-    public CompletableFuture<TDAHttpResponse> post(String endpoint, Map<String, String> headers, byte[] data) {
+    public CompletableFuture<TDAHttpResponse> post(String endpoint, Map<String, String> headers, Map<String, Object> data) {
         return tdaHttpClient.post(endpoint, headers, data);
+    }
+
+    public TDAHttpClient getTdaHttpClient() {
+        return tdaHttpClient;
     }
 }

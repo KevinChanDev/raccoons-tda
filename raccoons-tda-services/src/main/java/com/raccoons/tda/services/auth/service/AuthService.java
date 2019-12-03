@@ -3,22 +3,18 @@ package com.raccoons.tda.services.auth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.raccoons.tda.net.TDAHttpResponse;
-import com.raccoons.tda.services.auth.model.GrantRequest;
+import com.raccoons.tda.api.client.AccountContext;
+import com.raccoons.tda.services.auth.model.OAuth2AccessTokenResponse;
+import com.raccoons.tda.services.auth.model.UserBoundToken;
 import com.raccoons.tda.services.auth.util.TDAAuthConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.naming.ConfigurationException;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
 
 @Service
 public class AuthService {
@@ -37,15 +33,17 @@ public class AuthService {
     @Autowired
     private RefreshService refreshService;
 
+    @Autowired
+    private TDAClientService tdaClientService;
+
     private ObjectMapper objectMapper;
 
-    private static final TypeReference<Map<String, String>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, String>>() {
+    private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
     };
 
     @PostConstruct
     public void init() throws ConfigurationException {
         objectMapper = new ObjectMapper();
-
         if (authConfiguration.getClientId() == null) {
             throw new ConfigurationException("Client ID not provided");
         }
@@ -63,47 +61,48 @@ public class AuthService {
         }
     }
 
-    public CompletableFuture<Map<String, String>> authorize(String authCode) {
+    public CompletableFuture<OAuth2AccessTokenResponse> authorize(String authCode) {
         final String endpoint = authConfiguration.getTokenEndpoint();
 
-        // Json Data
-        final String grantType = "authorization_code";
-        final String accessType = "offline";
+        // Form Data
+        final Map<String, Object> formData = new HashMap<>();
 
-        // Post grant type requests
-        final GrantRequest grantRequest = new GrantRequest();
-
-        grantRequest.setGrantType(grantType);
-        grantRequest.setCode(authCode);
-        grantRequest.setAccessType(accessType);
-        grantRequest.setClientId(authConfiguration.getClientId());
-        grantRequest.setRedirectUri(authConfiguration.getRedirectUri());
-
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.newInstance();
-
-        uriComponentsBuilder.queryParam("grant_type", "authorization_code");
-        uriComponentsBuilder.queryParam("access_type", "offline");
-        uriComponentsBuilder.queryParam("code", authCode);
-        uriComponentsBuilder.queryParam("client_id", authConfiguration.getClientId());
-        uriComponentsBuilder.queryParam("redirect_uri", authConfiguration.getRedirectUri());
-
-        final String queryString = uriComponentsBuilder.build().encode().toUriString().substring(1);
-
-        System.out.println(queryString);
+        formData.put("grant_type", "authorization_code");
+        formData.put("access_type", "offline");
+        formData.put("code", authCode);
+        formData.put("client_id", authConfiguration.getClientId());
+        formData.put("redirect_uri", authConfiguration.getRedirectUri());
 
         final Map<String, String> headers = new HashMap<>();
-
         headers.put("Content-Type", "application/x-www-form-urlencoded");
 
-        return httpService.post(endpoint, headers, queryString.getBytes()).thenApply(tdaHttpResponse -> {
+        return httpService.post(endpoint, headers, formData).thenApply(tdaHttpResponse -> {
             final String data = new String(tdaHttpResponse.getBody());
             try {
-                return objectMapper.readValue(data, MAP_TYPE_REFERENCE);
+                return OAuth2AccessTokenResponse.of(objectMapper.readValue(data, MAP_TYPE_REFERENCE));
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                return new HashMap<>();
+                return OAuth2AccessTokenResponse.failed();
             }
         });
+    }
+
+    public CompletableFuture<UserBoundToken> processUserOAuthToken(OAuth2AccessTokenResponse response) {
+        if (response != null && response.isValid()) {
+            final String accessToken = response.getAccessToken();
+            final AccountContext accountContext = new AccountContext(accessToken);
+            return tdaClientService.getUserInfoClient().getUserPrincipals(accountContext, "preferences", "surrogateIds")
+                    .thenApply(userPrincipleResponse -> new UserBoundToken(response, userPrincipleResponse.getData()));
+        }
+        return CompletableFuture.completedFuture(null);
+    }
+
+    public CompletableFuture<String> storeResponse(UserBoundToken userBoundToken) {
+        return null;
+    }
+
+    public CompletableFuture<String> userResponse() {
+        return null;
     }
 
 }

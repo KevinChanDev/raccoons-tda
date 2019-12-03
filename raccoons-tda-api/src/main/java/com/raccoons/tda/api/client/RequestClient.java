@@ -4,7 +4,6 @@ import com.raccoons.tda.net.TDAHttpClient;
 
 public class RequestClient {
 
-
     private TDAHttpClient httpClient;
     private Settings settings;
 

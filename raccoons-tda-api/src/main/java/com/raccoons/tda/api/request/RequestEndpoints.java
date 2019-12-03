@@ -24,6 +24,11 @@ public class RequestEndpoints {
     public static final String GET_QUOTE = "https://api.tdameritrade.com/v1/marketdata/%s/quotes";
     public static final String GET_QUOTES = "https://api.tdameritrade.com/v1/marketdata/quotes";
 
+    // User Info
+    public static final String GET_PREFERENCES = "https://api.tdameritrade.com/v1/accounts/%s/preferences";
+    public static final String GET_STREAMER_SUBSCRIPTION_KEYS = "https://api.tdameritrade.com/v1/userprincipals/streamersubscriptionkeys";
+    public static final String GET_USER_PRINCIPLES = "https://api.tdameritrade.com/v1/userprincipals";
+
     public static String cancelOrder(final String accountId, final String orderId) {
         return "";
     }
@@ -62,5 +67,17 @@ public class RequestEndpoints {
 
     public static String getQuotes() {
         return GET_QUOTES;
+    }
+
+    public static String getPreferences(final String accountId) {
+        return String.format(GET_PREFERENCES, accountId);
+    }
+
+    public static String getStreamerSubscriptionKeys() {
+        return GET_STREAMER_SUBSCRIPTION_KEYS;
+    }
+
+    public static String getUserPrinciples() {
+        return GET_USER_PRINCIPLES;
     }
 }

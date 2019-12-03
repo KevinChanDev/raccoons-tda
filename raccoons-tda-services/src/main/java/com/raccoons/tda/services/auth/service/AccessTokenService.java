@@ -25,39 +25,41 @@ public class AccessTokenService {
     }
 
     public CompletableFuture<String> storeAccessToken(String owner, String value) {
-        final String key = "";
-        final String encryptedValue = "";
+        final String key = owner;
+        final String encryptedValue = value;
         return redisService.storeToken(key, encryptedValue);
     }
 
     public CompletableFuture<String> storeAccessToken(String owner, String value, long expiration) {
-        final String key = "";
-        final String encryptedValue = "";
+        final String key = owner;
+        final String encryptedValue = value;
         return redisService.storeToken(key, encryptedValue, expiration);
     }
 
-    public CompletableFuture<String> deleteAccessToken(String owner) {
-        return null;
+    public CompletableFuture<Boolean> deleteAccessToken(String owner) {
+        final String key = owner;
+        return redisService.deleteToken(key).thenApply(l -> l > 0);
     }
 
     public CompletableFuture<String> getRefreshToken(String owner) {
-        return null;
+        return redisService.getAccessToken(owner);
     }
 
     public CompletableFuture<String> storeRefreshToken(String owner, String value) {
-        final String key = "";
-        final String encryptedValue = "";
+        final String key = owner;
+        final String encryptedValue = value;
         return redisService.storeToken(key, encryptedValue);
     }
 
     public CompletableFuture<String> storeRefreshToken(String owner, String value, long expiration) {
-        final String key = "";
-        final String encryptedValue = "";
+        final String key = owner;
+        final String encryptedValue = value;
         return redisService.storeToken(key, encryptedValue, expiration);
     }
 
-    public CompletableFuture<String> deleteRefreshToken(String owner) {
-        return null;
+    public CompletableFuture<Boolean> deleteRefreshToken(String owner) {
+        final String key = owner;
+        return redisService.deleteToken(key).thenApply(l -> l > 0);
     }
 
 }
