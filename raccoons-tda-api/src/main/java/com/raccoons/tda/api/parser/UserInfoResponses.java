@@ -24,11 +24,8 @@ public class UserInfoResponses {
         };
 
         try {
-            System.out.println(data);
             final UserPrincipal userPrincipal = getObjectMapper().readValue(data, typeReference);
-            System.out.println(getObjectMapper().writeValueAsString(userPrincipal));
-            System.out.println();
-
+            return new UserPrincipleResponse(TDAResponseStatus.SUCCESSFUL, userPrincipal);
         } catch (Exception e) {
             e.printStackTrace();
         }

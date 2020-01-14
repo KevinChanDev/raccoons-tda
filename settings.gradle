@@ -1,5 +1,5 @@
 rootProject.name = 'raccoons-tda'
-include 'raccoons-tda-services'
-include 'raccoons-tda-clients'
+include 'raccoons-tda-auth'
+include 'raccoons-tda-auth-client'
 include 'raccoons-tda-api'
 

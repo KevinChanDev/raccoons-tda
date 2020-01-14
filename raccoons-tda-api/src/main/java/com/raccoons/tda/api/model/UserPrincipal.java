@@ -122,41 +122,42 @@ public class UserPrincipal {
 
     public static class Quotes {
 
-        public boolean isNyseDelayed;
-        public boolean isNasdaqDelayed;
-        public boolean isOpraDelayed;
-        public boolean isAmexDelayed;
-        public boolean isCmeDelayed;
-        public boolean isIceDelayed;
-        public boolean isForexDelayed;
+        private boolean isNyseDelayed;
+        private boolean isNasdaqDelayed;
+        private boolean isOpraDelayed;
+        private boolean isAmexDelayed;
+        private boolean isCmeDelayed;
+        private boolean isIceDelayed;
+        private boolean isForexDelayed;
 
-        public boolean getNyseDelayed() {
+        public boolean getIsNyseDelayed() {
             return isNyseDelayed;
         }
 
-        public boolean getNasdaqDelayed() {
+        public boolean getIsNasdaqDelayed() {
             return isNasdaqDelayed;
         }
 
-        public boolean getOpraDelayed() {
+        public boolean getIsOpraDelayed() {
             return isOpraDelayed;
         }
 
-        public boolean getAmexDelayed() {
+        public boolean getIsAmexDelayed() {
             return isAmexDelayed;
         }
 
-        public boolean getCmeDelayed() {
+        public boolean getIsCmeDelayed() {
             return isCmeDelayed;
         }
 
-        public boolean getIceDelayed() {
+        public boolean getIsIceDelayed() {
             return isIceDelayed;
         }
 
-        public boolean getForexDelayed() {
+        public boolean getIsForexDelayed() {
             return isForexDelayed;
         }
+
     }
 
     public static class StreamerSubscriptionKeys {
@@ -290,7 +291,6 @@ public class UserPrincipal {
             private String equityTaxLotMethod;
             private String defaultAdvancedToolLaunch;
             private String authTokenTimeout;
-
 
             public boolean isExpressTrading() {
                 return expressTrading;

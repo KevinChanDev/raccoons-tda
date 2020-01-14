@@ -5,10 +5,12 @@ import com.raccoons.tda.api.request.RequestEndpoints;
 import com.raccoons.tda.api.response.TDAResponse;
 import com.raccoons.tda.api.response.UserPrincipleResponse;
 import com.raccoons.tda.net.TDAHttpClient;
+import com.raccoons.tda.net.TDAHttpResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
 
 public class UserInfoClient extends RequestOperation {
 
@@ -18,8 +20,17 @@ public class UserInfoClient extends RequestOperation {
         super(requestClient);
     }
 
-    public CompletableFuture<TDAResponse> getPreferences() {
-        return null;
+    public CompletableFuture<TDAResponse> getPreferences(final AccountContext accountContext) {
+        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final String accountId = accountContext.getAccountId();
+        final String endpoint = RequestEndpoints.getPreferences(accountId);
+
+        return tdaHttpClient.get(endpoint, accountContext.getAuthorizationHeader()).thenApply(new Function<TDAHttpResponse, TDAResponse>() {
+            @Override
+            public TDAResponse apply(TDAHttpResponse tdaHttpResponse) {
+                return null;
+            }
+        });
     }
 
     public CompletableFuture<TDAResponse> getStreamerSubscriptionKeys() {

@@ -9,6 +9,7 @@
 .idea/
 tda_structures/
 test_files/
+snippets/
 
 # User-specific stuff
 .idea/**/workspace.xml
