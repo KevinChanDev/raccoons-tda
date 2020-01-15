@@ -1,15 +1,24 @@
 package com.raccoons.tda.auth;
 
-public interface AccessTokenProvider {
+import java.io.Closeable;
+import java.util.concurrent.CompletableFuture;
 
-    String getAccessToken(String ownerKey);
+public interface AccessTokenProvider extends Closeable {
 
-    String refreshAccessToken(String ownerKey);
+    String getAccessToken(String owner);
 
-    String refreshAndGetAccessToken(String ownerKey);
+    CompletableFuture<String> getAccessTokenAsync(final String owner);
 
-    boolean revokeToken(String ownerKey);
+    void refreshAccessToken(String owner);
 
-    boolean invalidate(String ownerKey);
+    String refreshAndGetAccessToken(String owner);
+
+    boolean revokeToken(String owner);
+
+    boolean invalidate(String owner);
+
+    double availability();
+
+    int status();
 
 }

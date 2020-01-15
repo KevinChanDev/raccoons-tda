@@ -24,9 +24,8 @@ dependencies {
         exclude group: 'org.org.springframework.boot', module: 'spring-boot-starter-logging'
     }
 
-    //implementation 'org.thymeleaf:thymeleaf-spring4:3.0.9.RELEASE'
-    //implementation 'org.thymeleaf:thymeleaf:3.0.9.RELEASE'
     implementation project(':raccoons-tda-api')
+    implementation project(':raccoons-tda-auth-lib')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
