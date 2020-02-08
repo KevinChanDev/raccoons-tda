@@ -1,23 +1,25 @@
 package com.raccoons.ws;
 
 import com.raccoons.tda.auth.client.RaccoonsTDAAuthClient;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class WebSocketClientTester {
 
     @Test
-    public void testConnection() throws InterruptedException {
+    public void testAccessToken() throws InterruptedException {
         final String ws = "ws://localhost:8080/connection";
+        final String owner = "owner1";
+
         final RaccoonsTDAAuthClient authClient = new RaccoonsTDAAuthClient(ws);
+        final String accessToken = authClient.getAccessToken(owner);
 
-        for (int i = 0; i < 100; i++) {
-            authClient.getAccessToken("hello!!!");
-            Thread.sleep(10000);
-        }
+        System.out.println(accessToken);
+        Thread.sleep(2500);
+        System.out.println("token: " + authClient.getAccessToken(owner));
+        Thread.sleep(2500);
 
-        //Assert.assertEquals(1.0, authClient.availability(), 0);
-        System.out.println("Sleeping for some time!");
-        Thread.sleep(100000);
+        Assert.assertEquals(1L, 1L);
     }
 
 }

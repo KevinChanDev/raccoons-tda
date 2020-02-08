@@ -11,7 +11,6 @@ public class ConnectionSocketHandler extends TextWebSocketHandler {
     private WebSocketChannelService webSocketChannelService;
 
     public ConnectionSocketHandler() {
-
     }
 
     @Override

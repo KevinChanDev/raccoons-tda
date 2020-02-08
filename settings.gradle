@@ -3,4 +3,5 @@ include 'raccoons-tda-auth'
 include 'raccoons-tda-auth-client'
 include 'raccoons-tda-api'
 include 'raccoons-tda-auth-lib'
+include 'raccoons-tda-api-tester'
 

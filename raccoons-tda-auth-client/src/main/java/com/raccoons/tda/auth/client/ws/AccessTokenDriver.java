@@ -7,7 +7,6 @@ import com.raccoons.auth.lib.AccessTokenRequest;
 import com.raccoons.auth.lib.AccessTokenResponse;
 import com.raccoons.auth.lib.AccessTokenResponseType;
 
-import java.io.IOException;
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -15,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AccessTokenDriver implements WebSocket.Listener {
 
-    private static TypeReference<AccessTokenResponse> RESPONSE_TYPE_REFERENCE = new TypeReference<>() {
+    private static final TypeReference<AccessTokenResponse> RESPONSE_TYPE_REFERENCE = new TypeReference<>() {
     };
 
     private AtomicBoolean connected;
@@ -36,6 +35,7 @@ public class AccessTokenDriver implements WebSocket.Listener {
         if (listener != null) {
             listener.onOpen();
         }
+        webSocket.request(1);
     }
 
     @Override
@@ -45,22 +45,22 @@ public class AccessTokenDriver implements WebSocket.Listener {
             try {
                 final AccessTokenResponse response = objectMapper.readValue(jsonData, RESPONSE_TYPE_REFERENCE);
                 final int responseType = response.getResponseType();
-                if (responseType == AccessTokenResponseType.ACCESS_TOKEN) {
+
+                if (responseType == AccessTokenResponseType.ACCESS_TOKEN || responseType == AccessTokenResponseType.REFRESH_RESPONSE) {
                     final String owner = response.getOwner();
                     final String accessToken = response.getAccessToken();
 
-                    listener.onAccessToken("", "");
-
-                } else {
-
+                    listener.onAccessToken(owner, accessToken);
+                } else if (responseType == AccessTokenResponseType.REVOKE_RESPONSE) {
+                    final String owner = response.getOwner();
+                    listener.onAccessTokenRevoked(owner);
                 }
-
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         webSocket.request(1L);
-        return CompletableFuture.completedFuture(data);
+        return null;
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AccessTokenDriver implements WebSocket.Listener {
 
     @Override
     public void onError(WebSocket webSocket, Throwable error) {
-
+        error.printStackTrace();
     }
 
     public CompletableFuture<WebSocket> sendRequest(AccessTokenRequest request) {
@@ -90,6 +90,10 @@ public class AccessTokenDriver implements WebSocket.Listener {
     public void close() {
         webSocket.abort();
         connected.set(false);
+
+        if (listener != null) {
+            listener.onClose();
+        }
     }
 
     public interface Listener {

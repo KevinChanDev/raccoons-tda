@@ -11,29 +11,28 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDriver.Listener {
 
     public static final int CONNECTED = 0;
     public static final int DISCONNECTED = 1;
 
-    private static final String EMPTY_TOKEN = "";
-
     private final AccessTokenDriver accessTokenDriver;
-    private final AtomicReference<String> accessToken;
     private final Map<String, String> accessTokens;
-
-    private AtomicInteger status;
+    private final Map<String, Object> accessTokenLocks;
+    private final AtomicInteger status;
 
     public RaccoonsTDAAuthClient(final String tdaAuthServiceEndpoint) {
+        this(tdaAuthServiceEndpoint, new String[0]);
+    }
+
+    public RaccoonsTDAAuthClient(final String tdaAuthServiceEndpoint, final String[] initialOwners) {
         final HttpClient client = HttpClient.newHttpClient();
 
         this.accessTokenDriver = new AccessTokenDriver(this);
-        this.accessToken = new AtomicReference<>(EMPTY_TOKEN);
         this.status = new AtomicInteger();
         this.accessTokens = new ConcurrentHashMap<>();
+        this.accessTokenLocks = new ConcurrentHashMap<>();
 
         client.newWebSocketBuilder().buildAsync(URI.create(tdaAuthServiceEndpoint), accessTokenDriver).join();
     }
@@ -41,8 +40,11 @@ public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDr
     @Override
     public String getAccessToken(String owner) {
         return accessTokens.computeIfAbsent(owner, s -> {
-            final AccessTokenRequest request = AccessTokenRequest.request(s);
-            accessTokenDriver.sendRequest(request);
+
+            if (s != null && !s.isEmpty()) {
+                final AccessTokenRequest request = AccessTokenRequest.request(s);
+                accessTokenDriver.sendRequest(request);
+            }
             return null;
         });
     }
