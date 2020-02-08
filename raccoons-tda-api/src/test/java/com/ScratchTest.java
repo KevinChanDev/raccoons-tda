@@ -8,4 +8,5 @@ public class ScratchTest {
     public static void test() {
 
     }
+
 }
