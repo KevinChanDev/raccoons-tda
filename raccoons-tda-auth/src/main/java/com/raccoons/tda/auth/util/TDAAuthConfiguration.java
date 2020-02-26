@@ -1,9 +1,9 @@
 package com.raccoons.tda.auth.util;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class TDAAuthConfiguration {
 
     @Value("${tda.auth.client.id}")

@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  raccoons_tda_auth:
+    image: .
+    networks:
+      - raccoons_tda_auth_network
+
+  redis:
+    image: redis
+    networks:
+      - raccoons_tda_auth_network
+
+  postgres:
+    image: postgres
+    networks:
+      - raccoons_tda_auth_network
+
+volumes:
+  v1:
+
+networks:
+  raccoons_tda_auth_network:
+

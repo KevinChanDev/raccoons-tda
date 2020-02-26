@@ -15,7 +15,7 @@ public class OAuth2AccessTokenResponse {
         this.valid = valid;
     }
 
-    private OAuth2AccessTokenResponse(Map<String, Object> values) {
+    private OAuth2AccessTokenResponse(final Map<String, Object> values) {
         try {
             final String accessToken = (String) values.get("access_token");
             final String refreshToken = (String) values.get("refresh_token");

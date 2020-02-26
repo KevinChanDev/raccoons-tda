@@ -1,8 +1,12 @@
 package com.raccoons.tda.auth.service;
 
+import com.raccoons.tda.context.TDAContext;
+import com.raccoons.tda.logging.TDALogger;
 import com.raccoons.tda.net.AsyncTDAHttpClient;
 import com.raccoons.tda.net.TDAHttpClient;
 import com.raccoons.tda.net.TDAHttpResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -14,17 +18,23 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class HttpService {
 
+    private static final Logger logger = LogManager.getLogger(AuthService.class);
+
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
+
+    @Autowired
+    private TDAContext tdaContext;
 
     private TDAHttpClient tdaHttpClient;
 
     @PostConstruct
     public void init() {
-        tdaHttpClient = new AsyncTDAHttpClient(threadPoolTaskScheduler.getScheduledExecutor());
+        tdaHttpClient = tdaContext.getClientProvider().getTDAHttpClient();
     }
 
     public CompletableFuture<TDAHttpResponse> post(String endpoint, Map<String, String> headers, Map<String, Object> data) {
+        logger.info("Making POST request to endpoint {}.", endpoint);
         return tdaHttpClient.post(endpoint, headers, data);
     }
 
