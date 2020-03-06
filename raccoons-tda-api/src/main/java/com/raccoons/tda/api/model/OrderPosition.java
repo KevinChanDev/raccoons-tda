@@ -8,6 +8,7 @@ import java.util.List;
 public class OrderPosition {
 
     private Session session;
+
     private Duration duration;
     private OrderType orderType;
 
@@ -34,7 +35,7 @@ public class OrderPosition {
     private TaxLot taxLotMethod;
 
     private List<OrderLeg> orderLegCollection;
-    private double activationPrice;
+    private Double activationPrice;
     private SpecialInstruction specialInstruction;
     private Long orderId;
     private Boolean cancelable;
@@ -54,5 +55,6 @@ public class OrderPosition {
     public OrderPosition() {
 
     }
+
 
 }
