@@ -1,14 +1,24 @@
-FROM gradle:4.7.0-jdk8-alpine AS build
+FROM gradle:6.2.1-jdk11 AS build
+
+# Copy everything from the current directory to /home/gradle/src and set the owner to the 'gradle' user
 COPY --chown=gradle:gradle . /home/gradle/src
+
+# Change the directory
 WORKDIR /home/gradle/src
-RUN gradle build --no-daemon 
 
-FROM openjdk:8-jre-slim
+# Build from the current working directory
+RUN gradle build --no-daemon
 
-EXPOSE 8080
+# Use a Java 11 JRE
+FROM openjdk:11-jre-slim
+
+EXPOSE 9876
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+# Copy all jars from the libs directory and place it in the app directory
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/raccoons-tda-auth-service.jar
 
-ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/spring-boot-application.jar"]
+# Execute the application
+ENTRYPOINT ["java", "-XX:+UnlockExperimentalVMOptions", "-XX:+UseCGroupMemoryLimitForHeap",
+                "-Djava.security.egd=file:/dev/./urandom","-jar","/app/raccoons-tda-auth-service.jar"]

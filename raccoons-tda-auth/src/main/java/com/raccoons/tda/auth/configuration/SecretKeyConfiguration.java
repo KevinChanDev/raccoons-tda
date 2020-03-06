@@ -2,7 +2,6 @@ package com.raccoons.tda.auth.configuration;
 
 import com.raccoons.tda.auth.security.ApplicationSecretKey;
 import com.raccoons.tda.auth.security.SecurityVariables;
-import com.raccoons.tda.auth.service.AuthService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.nio.file.Paths;
 @Configuration
 public class SecretKeyConfiguration {
 
-    private static final Logger logger = LogManager.getLogger(AuthService.class);
+    private static final Logger logger = LogManager.getLogger(SecretKeyConfiguration.class);
 
     @Autowired
     private SecurityVariables securityVariables;

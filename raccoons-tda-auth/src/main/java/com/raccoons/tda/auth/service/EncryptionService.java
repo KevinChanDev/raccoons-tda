@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 
 @Service
-public class SecurityService {
+public class EncryptionService {
 
-    private static final Logger logger = LogManager.getLogger(SecurityService.class);
+    private static final Logger logger = LogManager.getLogger(EncryptionService.class);
 
     private String salt;
 
@@ -23,15 +23,17 @@ public class SecurityService {
 
     @PostConstruct
     public void init() {
-        logger.info("Initializing AESCryptography instance");
+        logger.trace("Initializing AESCryptography instance.");
         this.aesCryptography = new AESCryptography(salt);
     }
 
-    public String encryptValue(String value) {
+    public String encryptValue(final String value) {
+        logger.trace("Encrypting value of length {}.", value.length());
         return aesCryptography.encrypt(value, applicationSecretKey.getSecretKey());
     }
 
-    public String decryptValue(String value) {
+    public String decryptValue(final String value) {
+        logger.trace("Decrypting value of length {}.", value.length());
         return aesCryptography.decrypt(value, applicationSecretKey.getSecretKey());
     }
 

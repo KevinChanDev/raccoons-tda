@@ -2,10 +2,11 @@ package com.raccoons.tda.auth.controller;
 
 import com.raccoons.tda.api.model.UserPrincipal;
 import com.raccoons.tda.auth.model.OAuth2AccessTokenResponse;
+import com.raccoons.tda.auth.service.AccessTokenService;
 import com.raccoons.tda.auth.service.AuthService;
 import com.raccoons.tda.auth.util.Digest;
 import com.raccoons.tda.auth.util.RequestUserInfo;
-import com.raccoons.tda.auth.util.TDAAuthConfiguration;
+import com.raccoons.tda.auth.configuration.TDAAuthConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,13 @@ import java.util.concurrent.CompletableFuture;
 public class OAuthController {
 
     private static final Logger logger = LogManager.getLogger(OAuthController.class);
+    private static final int FAILED_STATUS = 400;
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private AccessTokenService accessTokenService;
 
     @Autowired
     private TDAAuthConfiguration tdaAuthConfiguration;
@@ -76,7 +81,7 @@ public class OAuthController {
                     logger.info("Access Token Signature: {}", accessTokenSignature);
                 }
                 return authService.processUserOAuthToken(r);
-            }).thenApply(userBoundToken -> {
+            }).thenCompose(userBoundToken -> {
                 if (userBoundToken != null) {
                     final UserPrincipal userPrincipal = userBoundToken.getUserPrincipal();
                     final OAuth2AccessTokenResponse response = userBoundToken.getOAuth2AccessTokenResponse();
@@ -87,8 +92,12 @@ public class OAuthController {
 
                     logger.info("User registered: {}, Account Id: {}, Access Token Signature: {}.",
                             userId, primaryAccountId, accessTokenSignature);
+
+                    return accessTokenService.storeUserBoundToken(userBoundToken)
+                            .thenApply(b -> b ? ResponseEntity.ok().build() : ResponseEntity.status(FAILED_STATUS).build());
+                } else {
+                    return CompletableFuture.completedFuture(ResponseEntity.status(FAILED_STATUS).build());
                 }
-                return ResponseEntity.ok().build();
             });
         }
         return CompletableFuture.supplyAsync(() -> ResponseEntity.ok().build());

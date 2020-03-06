@@ -1,8 +1,6 @@
 package com.raccoons.tda.auth.service;
 
 import com.raccoons.tda.context.TDAContext;
-import com.raccoons.tda.logging.TDALogger;
-import com.raccoons.tda.net.AsyncTDAHttpClient;
 import com.raccoons.tda.net.TDAHttpClient;
 import com.raccoons.tda.net.TDAHttpResponse;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class HttpService {
 
-    private static final Logger logger = LogManager.getLogger(AuthService.class);
+    private static final Logger logger = LogManager.getLogger(HttpService.class);
 
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
@@ -38,7 +36,7 @@ public class HttpService {
         return tdaHttpClient.post(endpoint, headers, data);
     }
 
-    public TDAHttpClient getTdaHttpClient() {
+    public TDAHttpClient getTDAHttpClient() {
         return tdaHttpClient;
     }
 }

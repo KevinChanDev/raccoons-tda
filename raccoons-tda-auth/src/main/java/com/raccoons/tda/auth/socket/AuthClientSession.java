@@ -9,4 +9,5 @@ public class AuthClientSession {
     public WebSocketSession getWebSocketSession() {
         return webSocketSession;
     }
+
 }

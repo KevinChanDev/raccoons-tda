@@ -12,4 +12,5 @@ public class SecurityVariables {
     public String getSecretKeyFilePath() {
         return secretKeyFilePath;
     }
+
 }

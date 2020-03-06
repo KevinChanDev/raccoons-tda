@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- *
+ * The goal of this service is to convert Strings to AccessTokenResponse and AccessTokenRequests
  */
 @Service
 public class MessageSerializationService {
@@ -21,7 +21,7 @@ public class MessageSerializationService {
     private static TypeReference<AccessTokenRequest> REQUEST_TYPE_REF = new TypeReference<AccessTokenRequest>() {
     };
 
-    public Optional<String> writeResponse(AccessTokenResponse response) {
+    public Optional<String> writeResponse(final AccessTokenResponse response) {
         try {
             final String responseString = objectMapper.writeValueAsString(response);
             return Optional.of(responseString);

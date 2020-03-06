@@ -1,7 +1,8 @@
-package com.raccoons.tda.auth.service;
+package com.raccoons.tda.auth.service.socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raccoons.auth.lib.AccessTokenResponse;
+import com.raccoons.tda.auth.service.MessageSerializationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.io.IOException;
 @Service
 public class WebSocketChannelService {
 
-    private static final Logger logger = LogManager.getLogger(AuthService.class);
+    private static final Logger logger = LogManager.getLogger(WebSocketChannelService.class);
 
     @Autowired
     private MessageSerializationService messageSerializationService;

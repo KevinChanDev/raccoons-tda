@@ -2,7 +2,6 @@ package com.raccoons.tda.auth.service;
 
 import com.raccoons.tda.api.client.TDAClient;
 import com.raccoons.tda.api.client.UserInfoClient;
-import com.raccoons.tda.auth.model.UserBoundToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class TDAClientService {
 
-    private static final Logger logger = LogManager.getLogger(UserBoundToken.class);
+    private static final Logger logger = LogManager.getLogger(TDAClientService.class);
 
     @Autowired
     private HttpService httpService;

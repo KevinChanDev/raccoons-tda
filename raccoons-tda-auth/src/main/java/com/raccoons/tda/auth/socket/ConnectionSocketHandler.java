@@ -1,6 +1,6 @@
 package com.raccoons.tda.auth.socket;
 
-import com.raccoons.tda.auth.service.WebSocketChannelService;
+import com.raccoons.tda.auth.service.socket.WebSocketChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -23,7 +23,6 @@ public class ConnectionSocketHandler extends TextWebSocketHandler {
         super.afterConnectionEstablished(session);
         webSocketChannelService.onSocketOpen(session);
     }
-
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {

@@ -6,9 +6,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raccoons.tda.api.client.AccountContext;
 import com.raccoons.tda.api.client.UserInfoClient;
 import com.raccoons.tda.auth.model.OAuth2AccessTokenResponse;
+import com.raccoons.tda.auth.model.OAuth2RefreshAccessTokenResponse;
 import com.raccoons.tda.auth.model.UserBoundToken;
+import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.util.Digest;
-import com.raccoons.tda.auth.util.TDAAuthConfiguration;
+import com.raccoons.tda.auth.configuration.TDAAuthConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ public class AuthService {
 
     private static final Logger logger = LogManager.getLogger(AuthService.class);
 
+    private static final int OK = 200;
     private static final String[] USER_PRINCIPLE_FIELDS = {"preferences", "surrogateIds"};
 
     @Autowired
@@ -32,12 +35,6 @@ public class AuthService {
 
     @Autowired
     private HttpService httpService;
-
-    @Autowired
-    private RedisService redisService;
-
-    @Autowired
-    private RefreshService refreshService;
 
     @Autowired
     private TDAClientService tdaClientService;
@@ -69,8 +66,18 @@ public class AuthService {
         logger.trace("Initialized AuthService instance.");
     }
 
+    /**
+     *
+     * @param code
+     * @return
+     */
     public CompletableFuture<OAuth2AccessTokenResponse> authorize(final String code) {
-        if (logger.isInfoEnabled()){
+        if (code == null) {
+            logger.info("Unable to perform access token request, the provided authorization code is null.");
+            return CompletableFuture.completedFuture(OAuth2AccessTokenResponse.failed());
+        }
+
+        if (logger.isInfoEnabled()) {
             final String codeSignature = Digest.sha256Hex(code);
             logger.info("Authorizing with Auth Code Signature: {}", codeSignature);
         }
@@ -89,14 +96,20 @@ public class AuthService {
         final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded");
 
+        logger.trace("Authorizing request headers: {}, form data: {}", headers, formData);
         return httpService.post(endpoint, headers, formData).thenApply(tdaHttpResponse -> {
-            final String data = new String(tdaHttpResponse.getBody());
-            try {
-                return OAuth2AccessTokenResponse.of(objectMapper.readValue(data, MAP_TYPE_REFERENCE));
-            } catch (JsonProcessingException e) {
-                logger.error("Error occurred while trying to create a OAuth2AccessToken.", e);
-                return OAuth2AccessTokenResponse.failed();
+            final int statusCode = tdaHttpResponse.getStatusCode();
+            if (statusCode == OK) {
+                final String data = new String(tdaHttpResponse.getBody());
+                try {
+                    final OAuth2AccessTokenResponse r = OAuth2AccessTokenResponse.of(objectMapper.readValue(data, MAP_TYPE_REFERENCE));
+                    logger.trace("OAuth2AccessTokenResponse created successfully.");
+                    return r;
+                } catch (JsonProcessingException e) {
+                    logger.error("Error occurred while trying to create a OAuth2AccessTokenResponse.", e);
+                }
             }
+            return OAuth2AccessTokenResponse.failed();
         });
     }
 
@@ -122,12 +135,46 @@ public class AuthService {
         }
     }
 
-    public CompletableFuture<UserBoundToken> storeUserBoundToken(final UserBoundToken userBoundToken) {
-        return null;
-    }
+    /**
+     *
+     * @param accessToken
+     * @return Returns an OAuth2RefreshAccessTokenResponse
+     */
+    public CompletableFuture<OAuth2RefreshAccessTokenResponse> refreshAccessToken(final AccessToken accessToken) {
+        if (accessToken == null) {
+            logger.info("Unable to refresh access token, the provided token is null.");
+            return CompletableFuture.completedFuture(OAuth2RefreshAccessTokenResponse.failed());
+        }
 
-    public CompletableFuture<String> userResponse() {
-        return null;
+        logger.info("Request to refresh access token initialized.");
+        final String endpoint = authConfiguration.getTokenEndpoint();
+        final String refreshToken = accessToken.getRefreshToken();
+
+        if (refreshToken != null) {
+            final Map<String, Object> formData = new HashMap<>();
+            formData.put("grant_type", "refresh_token");
+            formData.put("refresh_token", refreshToken);
+            formData.put("client_id", authConfiguration.getClientId());
+
+            final Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/x-www-form-urlencoded");
+
+            return httpService.post(endpoint, headers, formData).thenApply(tdaHttpResponse -> {
+                final int statusCode = tdaHttpResponse.getStatusCode();
+                if (statusCode == OK) {
+                    final String data = new String(tdaHttpResponse.getBody());
+                    try {
+                        final OAuth2RefreshAccessTokenResponse r = OAuth2RefreshAccessTokenResponse.of(objectMapper.readValue(data, MAP_TYPE_REFERENCE));
+                        logger.trace("OAuth2RefreshAccessTokenResponse created successfully.");
+                        return r;
+                    } catch (JsonProcessingException e) {
+                        logger.error("Error occurred while trying to create a OAuth2RefreshAccessTokenResponse.", e);
+                    }
+                }
+                return OAuth2RefreshAccessTokenResponse.failed();
+            });
+        }
+        return CompletableFuture.completedFuture(OAuth2RefreshAccessTokenResponse.failed());
     }
 
 }

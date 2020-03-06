@@ -1,23 +1,72 @@
 version: '3.1'
 
 services:
-  raccoons_tda_auth:
-    image: .
-    networks:
-      - raccoons_tda_auth_network
+  #  raccoons_tda_auth:
+  #    image: .
+  #    restart: always
+  #    expose:
+  #      - "8080"
+  #    environment:
+  #      TDA_AUTH_REDIRECT_URI: http://127.0.0.1:8080/auth/callback
+  #      TDA_AUTH_CLIENT_ID: E90FEEDTDA
+  #      TDA_AUTH_ENDPOINT_AUTH: https://auth.tdameritrade.com/auth
+  #      TDA_AUTH_ENDPOINT_TOKEN: https://api.tdameritrade.com/v1/oauth2/token
+  #      TDA_AUTH_TOKEN_EXPIRATION: 1800000
+  #      TDA_AUTH_REDIS_URI: redis://redis:6379
+  #      TDA_AUTH_REFRESH_ENABLE: true
+  #      TDA_AUTH_REFRESH_FREQUENCY: 30000
+  #      TDA_AUTH_REFRESH_THRESHOLD: 0.25
+  #      TDA_AUTH_MAPPING_CALLBACK: auth/callback
+  #      TDA_AUTH_MAPPING_LOGIN: login
+  #      TDA_AUTH_DATASOURCE_JDBC_URI: jdbc:postgresql://postgres:5432/raccoons_tda_auth
+  #      TDA_AUTH_DATASOURCE_USERNAME: postgres
+  #      TDA_AUTH_DATASOURCE_PASSWORD: password
+  #    networks:
+  #      - raccoons_tda_auth_network
 
   redis:
     image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    expose:
+      - "6379"
     networks:
       - raccoons_tda_auth_network
 
   postgres:
     image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    expose:
+      - "5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: raccoons_tda_auth
+    volumes:
+      - "raccoons_tda_auth_db_data:/var/lib/postgresql/data"
+    networks:
+      - raccoons_tda_auth_network
+
+  pg_admin:
+    image: dpage/pgadmin4
+    ports:
+      - "8088:80"
+    expose:
+      - "8088"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root@localhost.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      - "raccoons_tda_auth_pg_admin_data:/var/lib/pgadmin"
     networks:
       - raccoons_tda_auth_network
 
 volumes:
-  v1:
+  raccoons_tda_auth_redis_data:
+  raccoons_tda_auth_db_data:
+  raccoons_tda_auth_pg_admin_data:
 
 networks:
   raccoons_tda_auth_network:

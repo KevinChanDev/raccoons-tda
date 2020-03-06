@@ -1,7 +1,7 @@
 package com.raccoons.tda.auth.service;
 
-import com.raccoons.tda.auth.model.AccessToken;
-import com.raccoons.tda.auth.util.TDAAuthConfiguration;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class RefreshService {
 
+    private static final Logger logger = LogManager.getLogger(RefreshService.class);
+
     @Value("${tda.auth.refresh.enable}")
     private boolean refreshEnable;
 
@@ -24,32 +26,21 @@ public class RefreshService {
     private double refreshThreshold;
 
     @Autowired
-    private HttpService httpService;
-
-    @Autowired
-    private TDAAuthConfiguration authConfiguration;
+    private AuthService authService;
 
     @Autowired
     private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
     private ScheduledFuture<?> scheduledFuture;
 
-
-    public RefreshService() {
-    }
-
     @PostConstruct
     private void init() {
-    }
-
-    private AccessToken get(AccessToken accessToken) {
-        return null;
+        logger.trace("Initializing RefreshService instance.");
     }
 
     public void start() {
         if (refreshEnable) {
             scheduledFuture = threadPoolTaskScheduler.getScheduledExecutor().scheduleWithFixedDelay(() -> {
-                System.out.println();
                 System.out.println();
             }, 0, refreshFrequency, TimeUnit.MILLISECONDS);
         }
@@ -60,4 +51,5 @@ public class RefreshService {
             scheduledFuture.cancel(true);
         }
     }
+
 }

@@ -13,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AESCryptography {
 
+    private static final int IV_LENGTH = 16;
     private static final int ITERATIONS = 65536;
     private static final int KEY_LENGTH = 256;
 
@@ -28,7 +29,7 @@ public class AESCryptography {
 
     public String encrypt(String value, String secret) {
         try {
-            byte[] iv = new byte[16];
+            byte[] iv = new byte[IV_LENGTH];
             final IvParameterSpec ivSpec = new IvParameterSpec(iv);
             final SecretKeyFactory factory = SecretKeyFactory.getInstance(FACTORY_ALGORITHM);
             final KeySpec spec = new PBEKeySpec(secret.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH);
@@ -43,9 +44,9 @@ public class AESCryptography {
         }
     }
 
-    public String decrypt(String strToDecrypt, String secret) {
+    public String decrypt(String value, String secret) {
         try {
-            byte[] iv = new byte[16];
+            byte[] iv = new byte[IV_LENGTH];
             final IvParameterSpec ivSpec = new IvParameterSpec(iv);
             final SecretKeyFactory factory = SecretKeyFactory.getInstance(FACTORY_ALGORITHM);
             final KeySpec spec = new PBEKeySpec(secret.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH);
@@ -54,7 +55,7 @@ public class AESCryptography {
 
             final Cipher cipher = Cipher.getInstance(CIPHER_ALGORITHM);
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-            return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+            return new String(cipher.doFinal(Base64.getDecoder().decode(value)));
         } catch (Exception e) {
             return null;
         }
