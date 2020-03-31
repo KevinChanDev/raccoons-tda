@@ -1,55 +1,77 @@
 package com.raccoons.tda.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Position {
 
-    private double shortQuantity;
-    private double averagePrice;
-    private double currentDayProfitLoss;
-    private double currentDayProfitLossPercentage;
-    private double longQuantity;
-    private double settledLongQuantity;
-    private double settledShortQuantity;
-    private double agedQuantity;
-    private double marketValue;
+    @JsonProperty("shortQuantity")
+    private Double shortQuantity;
+
+    @JsonProperty("averagePrice")
+    private Double averagePrice;
+
+    @JsonProperty("currentDayProfitLoss")
+    private Double currentDayProfitLoss;
+
+    @JsonProperty("currentDayProfitLossPercentage")
+    private Double currentDayProfitLossPercentage;
+
+    @JsonProperty("longQuantity")
+    private Double longQuantity;
+
+    @JsonProperty("settledLongQuantity")
+    private Double settledLongQuantity;
+
+    @JsonProperty("settledShortQuantity")
+    private Double settledShortQuantity;
+
+    @JsonProperty("agedQuantity")
+    private Double agedQuantity;
+
+    @JsonProperty("marketValue")
+    private Double marketValue;
+
+    @JsonProperty("instrument")
     private Instrument instrument;
 
-    public double getShortQuantity() {
+    public Double getShortQuantity() {
         return shortQuantity;
     }
 
-    public double getAveragePrice() {
+    public Double getAveragePrice() {
         return averagePrice;
     }
 
-    public double getCurrentDayProfitLoss() {
+    public Double getCurrentDayProfitLoss() {
         return currentDayProfitLoss;
     }
 
-    public double getCurrentDayProfitLossPercentage() {
+    public Double getCurrentDayProfitLossPercentage() {
         return currentDayProfitLossPercentage;
     }
 
-    public double getLongQuantity() {
+    public Double getLongQuantity() {
         return longQuantity;
     }
 
-    public double getSettledLongQuantity() {
+    public Double getSettledLongQuantity() {
         return settledLongQuantity;
     }
 
-    public double getSettledShortQuantity() {
+    public Double getSettledShortQuantity() {
         return settledShortQuantity;
     }
 
-    public double getAgedQuantity() {
+    public Double getAgedQuantity() {
         return agedQuantity;
     }
 
-    public double getMarketValue() {
+    public Double getMarketValue() {
         return marketValue;
     }
 
     public Instrument getInstrument() {
         return instrument;
     }
+
 }

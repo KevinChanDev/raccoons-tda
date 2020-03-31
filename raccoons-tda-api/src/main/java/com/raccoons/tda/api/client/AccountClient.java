@@ -9,25 +9,30 @@ import com.raccoons.tda.api.response.OrderPositionResponse;
 import com.raccoons.tda.api.response.OrderResponse;
 import com.raccoons.tda.api.response.TDAResponse;
 import com.raccoons.tda.api.value.Status;
+import com.raccoons.tda.context.TDAContext;
 import com.raccoons.tda.net.TDAHttpClient;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-public class AccountClient extends RequestOperation {
+public class AccountClient extends BaseClient {
 
-    public AccountClient(RequestClient requestClient) {
-        super(requestClient);
+    public AccountClient(TDAContext tdaContext) {
+        super(tdaContext);
     }
 
     public CompletableFuture<OrderResponse> cancelOrder(final AccountContext accountContext, final String orderId) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.cancelOrder(accountId, orderId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
+
+        if (getLogger().isInfoEnabled()) {
+            getLogger().info("Executing cancelOrder for " + accountId);
+        }
 
         return tdaHttpClient.delete(endpoint, accountContext.getAuthorizationHeader()).thenApply(tdaHttpResponse -> {
-            System.out.println("");
+            getLogger().info("Response from cancelOrder Received");
             return null;
         });
     }
@@ -35,20 +40,20 @@ public class AccountClient extends RequestOperation {
     public CompletableFuture<OrderPositionResponse> getOrder(final AccountContext accountContext, final String orderId) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.getOrder(accountId, orderId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
 
         return tdaHttpClient.get(endpoint, accountContext.getAuthorizationHeader()).thenApply(tdaHttpResponse -> {
             final String data = new String(tdaHttpResponse.getBody());
-
-            System.out.println(data);
+            getLogger().info(data);
             return null;
         });
     }
 
-    public CompletableFuture<OrderPositionResponse> getOrdersByPath(final AccountContext accountContext, final OrderPositionRequest orderPositionRequest) {
+    public CompletableFuture<OrderPositionResponse> getOrdersByPath(final AccountContext accountContext,
+                                                                    final OrderPositionRequest orderPositionRequest) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.getOrdersByPath(accountId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
 
         final Map<String, String> parameters = new HashMap<>();
 
@@ -77,9 +82,10 @@ public class AccountClient extends RequestOperation {
                 .thenApply(OrderPositionResponses::getOrderPositionResponse);
     }
 
-    public CompletableFuture<OrderPositionResponse> getOrdersByQuery(final AccountContext accountContext, final OrderPositionRequest orderPositionRequest) {
+    public CompletableFuture<OrderPositionResponse> getOrdersByQuery(final AccountContext accountContext,
+                                                                     final OrderPositionRequest orderPositionRequest) {
         final String endpoint = RequestEndpoints.getOrdersByQuery();
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
 
         final String accountId = orderPositionRequest.getAccountId();
 
@@ -112,42 +118,45 @@ public class AccountClient extends RequestOperation {
                 return null;
             });
         }
-
         return null;
     }
 
     public CompletableFuture<OrderResponse> placeOrder(final AccountContext accountContext, final OrderRequest orderRequest) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.placeOrder(accountId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
         return null;
     }
 
-    public CompletableFuture<OrderResponse> replaceOrder(final AccountContext accountContext, final String orderId, final OrderRequest orderRequest) {
+    public CompletableFuture<OrderResponse> replaceOrder(final AccountContext accountContext, final String orderId,
+                                                         final OrderRequest orderRequest) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.replaceOrder(accountId, orderId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
         return null;
     }
 
     public CompletableFuture<AccountResponse> getAccount(final AccountContext accountContext) {
         final String accountId = accountContext.getAccountId();
         final String endpoint = RequestEndpoints.getAccount(accountId);
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
 
         return tdaHttpClient.get(endpoint, accountContext.getAuthorizationHeader()).thenApply(tdaHttpResponse -> {
             final String data = new String(tdaHttpResponse.getBody());
-            System.out.println(data);
+            getLogger().info(data);
             return null;
         });
     }
 
     public CompletableFuture<AccountResponse> getAccounts(final AccountContext accountContext) {
         final String endpoint = RequestEndpoints.getAccounts();
-        final TDAHttpClient tdaHttpClient = getRequestClient().getHttpClient();
+        final TDAHttpClient tdaHttpClient = getContext().getClientProvider().getTDAHttpClient();
+
+        getLogger().info("Executing getAccounts");
+
         return tdaHttpClient.get(endpoint, accountContext.getAuthorizationHeader()).thenApply(tdaHttpResponse -> {
             final String data = new String(tdaHttpResponse.getBody());
-            System.out.println(data);
+            getLogger().info(data);
             return null;
         });
     }

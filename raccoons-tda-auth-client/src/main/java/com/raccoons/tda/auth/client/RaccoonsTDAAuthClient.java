@@ -1,7 +1,8 @@
 package com.raccoons.tda.auth.client;
 
-import com.raccoons.auth.lib.AccessTokenRequest;
-import com.raccoons.tda.auth.AccessTokenProvider;
+import com.raccoons.auth.lib.ServiceRequest;
+import com.raccoons.tda.auth.TDAAccessTokenProvider;
+import com.raccoons.tda.auth.client.util.BlockingConcurrentMap;
 import com.raccoons.tda.auth.client.ws.AccessTokenDriver;
 
 import java.io.IOException;
@@ -11,16 +12,19 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDriver.Listener {
+public class RaccoonsTDAAuthClient implements TDAAccessTokenProvider, AccessTokenDriver.Listener {
 
     public static final int CONNECTED = 0;
     public static final int DISCONNECTED = 1;
 
     private final AccessTokenDriver accessTokenDriver;
+    private BlockingConcurrentMap<String, String> blockingConcurrentMap;
     private final Map<String, String> accessTokens;
     private final Map<String, Object> accessTokenLocks;
     private final AtomicInteger status;
+    private final AtomicLong requestId;
 
     public RaccoonsTDAAuthClient(final String tdaAuthServiceEndpoint) {
         this(tdaAuthServiceEndpoint, new String[0]);
@@ -33,6 +37,7 @@ public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDr
         this.status = new AtomicInteger();
         this.accessTokens = new ConcurrentHashMap<>();
         this.accessTokenLocks = new ConcurrentHashMap<>();
+        this.requestId = new AtomicLong();
 
         client.newWebSocketBuilder().buildAsync(URI.create(tdaAuthServiceEndpoint), accessTokenDriver).join();
     }
@@ -40,9 +45,8 @@ public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDr
     @Override
     public String getAccessToken(String owner) {
         return accessTokens.computeIfAbsent(owner, s -> {
-
             if (s != null && !s.isEmpty()) {
-                final AccessTokenRequest request = AccessTokenRequest.request(s);
+                final ServiceRequest request = ServiceRequest.request(requestId.incrementAndGet(), s);
                 accessTokenDriver.sendRequest(request);
             }
             return null;
@@ -56,13 +60,13 @@ public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDr
 
     @Override
     public void refreshAccessToken(String owner) {
-        final AccessTokenRequest request = AccessTokenRequest.refresh(owner);
+        final ServiceRequest request = ServiceRequest.refresh(requestId.incrementAndGet(), owner);
         accessTokenDriver.sendRequest(request);
     }
 
     @Override
     public String refreshAndGetAccessToken(String owner) {
-        final AccessTokenRequest request = AccessTokenRequest.refresh(owner);
+        final ServiceRequest request = ServiceRequest.refresh(requestId.incrementAndGet(), owner);
         accessTokenDriver.sendRequest(null);
         return null;
     }
@@ -100,6 +104,7 @@ public class RaccoonsTDAAuthClient implements AccessTokenProvider, AccessTokenDr
 
     @Override
     public void onAccessToken(String owner, String accessToken) {
+        System.out.println(String.format("%s -> %s", owner, accessToken));
         accessTokens.put(owner, accessToken);
     }
 

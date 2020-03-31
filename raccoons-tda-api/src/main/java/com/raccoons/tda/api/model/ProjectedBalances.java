@@ -1,105 +1,146 @@
 package com.raccoons.tda.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class ProjectedBalances {
 
-    private double accruedInterest;
-    private double cashBalance;
-    private double cashReceipts;
-    private double longOptionMarketValue;
-    private double liquidationValue;
-    private double longMarketValue;
-    private double moneyMarketFund;
-    private double savings;
-    private double shortMarketValue;
-    private double pendingDeposits;
-    private double cashAvailableForTrading;
-    private double cashAvailableForWithdrawal;
-    private double cashCall;
-    private double longNonMarginableMarketValue;
-    private double totalCash;
-    private double shortOptionMarketValue;
-    private double mutualFundValue;
-    private double bondValue;
-    private double cashDebitCallValue;
-    private double unsettledCash;
+    @JsonProperty("accruedInterest")
+    private Double accruedInterest;
 
-    public double getAccruedInterest() {
+    @JsonProperty("cashBalance")
+    private Double cashBalance;
+
+    @JsonProperty("cashReceipts")
+    private Double cashReceipts;
+
+    @JsonProperty("longOptionMarketValue")
+    private Double longOptionMarketValue;
+
+    @JsonProperty("liquidationValue")
+    private Double liquidationValue;
+
+    @JsonProperty("longMarketValue")
+    private Double longMarketValue;
+
+    @JsonProperty("moneyMarketFund")
+    private Double moneyMarketFund;
+
+    @JsonProperty("savings")
+    private Double savings;
+
+    @JsonProperty("shortMarketValue")
+    private Double shortMarketValue;
+
+    @JsonProperty("pendingDeposits")
+    private Double pendingDeposits;
+
+    @JsonProperty("cashAvailableForTrading")
+    private Double cashAvailableForTrading;
+
+    @JsonProperty("cashAvailableForWithdrawal")
+    private Double cashAvailableForWithdrawal;
+
+    @JsonProperty("cashCall")
+    private Double cashCall;
+
+    @JsonProperty("longNonMarginableMarketValue")
+    private Double longNonMarginableMarketValue;
+
+    @JsonProperty("totalCash")
+    private Double totalCash;
+
+    @JsonProperty("shortOptionMarketValue")
+    private Double shortOptionMarketValue;
+
+    @JsonProperty("mutualFundValue")
+    private Double mutualFundValue;
+
+    @JsonProperty("bondValue")
+    private Double bondValue;
+
+    @JsonProperty("cashDebitCallValue")
+    private Double cashDebitCallValue;
+
+    @JsonProperty("unsettledCash")
+    private Double unsettledCash;
+
+    public Double getAccruedInterest() {
         return accruedInterest;
     }
 
-    public double getCashBalance() {
+    public Double getCashBalance() {
         return cashBalance;
     }
 
-    public double getCashReceipts() {
+    public Double getCashReceipts() {
         return cashReceipts;
     }
 
-    public double getLongOptionMarketValue() {
+    public Double getLongOptionMarketValue() {
         return longOptionMarketValue;
     }
 
-    public double getLiquidationValue() {
+    public Double getLiquidationValue() {
         return liquidationValue;
     }
 
-    public double getLongMarketValue() {
+    public Double getLongMarketValue() {
         return longMarketValue;
     }
 
-    public double getMoneyMarketFund() {
+    public Double getMoneyMarketFund() {
         return moneyMarketFund;
     }
 
-    public double getSavings() {
+    public Double getSavings() {
         return savings;
     }
 
-    public double getShortMarketValue() {
+    public Double getShortMarketValue() {
         return shortMarketValue;
     }
 
-    public double getPendingDeposits() {
+    public Double getPendingDeposits() {
         return pendingDeposits;
     }
 
-    public double getCashAvailableForTrading() {
+    public Double getCashAvailableForTrading() {
         return cashAvailableForTrading;
     }
 
-    public double getCashAvailableForWithdrawal() {
+    public Double getCashAvailableForWithdrawal() {
         return cashAvailableForWithdrawal;
     }
 
-    public double getCashCall() {
+    public Double getCashCall() {
         return cashCall;
     }
 
-    public double getLongNonMarginableMarketValue() {
+    public Double getLongNonMarginableMarketValue() {
         return longNonMarginableMarketValue;
     }
 
-    public double getTotalCash() {
+    public Double getTotalCash() {
         return totalCash;
     }
 
-    public double getShortOptionMarketValue() {
+    public Double getShortOptionMarketValue() {
         return shortOptionMarketValue;
     }
 
-    public double getMutualFundValue() {
+    public Double getMutualFundValue() {
         return mutualFundValue;
     }
 
-    public double getBondValue() {
+    public Double getBondValue() {
         return bondValue;
     }
 
-    public double getCashDebitCallValue() {
+    public Double getCashDebitCallValue() {
         return cashDebitCallValue;
     }
 
-    public double getUnsettledCash() {
+    public Double getUnsettledCash() {
         return unsettledCash;
     }
 }

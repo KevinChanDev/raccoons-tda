@@ -1,21 +1,40 @@
 package com.raccoons.tda.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.raccoons.tda.api.value.AccountType;
 
 import java.util.List;
 
-
 public class SecuritiesAccount {
 
+    @JsonProperty("type")
     private AccountType type;
+
+    @JsonProperty("accountId")
     private String accountId;
-    private int roundTrips;
-    private boolean isDayTrader;
-    private boolean isClosingOnlyRestricted;
+
+    @JsonProperty("roundTrips")
+    private Integer roundTrips;
+
+    @JsonProperty("isDayTrader")
+    private Boolean isDayTrader;
+
+    @JsonProperty("isClosingOnlyRestricted")
+    private Boolean isClosingOnlyRestricted;
+
+    @JsonProperty("positions")
     private List<Position> positions;
+
+    @JsonProperty("orderStrategies")
     private List<OrderPosition> orderStrategies;
+
+    @JsonProperty("initialBalances")
     private InitialBalances initialBalances;
+
+    @JsonProperty("currentBalances")
     private CurrentBalances currentBalances;
+
+    @JsonProperty("projectedBalances")
     private ProjectedBalances projectedBalances;
 
     public AccountType getType() {
@@ -26,15 +45,15 @@ public class SecuritiesAccount {
         return accountId;
     }
 
-    public int getRoundTrips() {
+    public Integer getRoundTrips() {
         return roundTrips;
     }
 
-    public boolean isDayTrader() {
+    public Boolean getDayTrader() {
         return isDayTrader;
     }
 
-    public boolean isClosingOnlyRestricted() {
+    public Boolean getClosingOnlyRestricted() {
         return isClosingOnlyRestricted;
     }
 

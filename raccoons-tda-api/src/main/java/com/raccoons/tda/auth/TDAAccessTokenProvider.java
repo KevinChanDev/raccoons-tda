@@ -3,7 +3,7 @@ package com.raccoons.tda.auth;
 import java.io.Closeable;
 import java.util.concurrent.CompletableFuture;
 
-public interface AccessTokenProvider extends Closeable {
+public interface TDAAccessTokenProvider extends Closeable {
 
     String getAccessToken(String owner);
 

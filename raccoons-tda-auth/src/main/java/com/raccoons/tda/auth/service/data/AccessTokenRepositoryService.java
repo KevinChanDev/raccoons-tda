@@ -3,67 +3,77 @@ package com.raccoons.tda.auth.service.data;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.model.token.SecureAccessToken;
 import com.raccoons.tda.auth.repository.SecureAccessTokenRepository;
-import com.raccoons.tda.auth.service.EncryptionService;
+import com.raccoons.tda.auth.service.security.AccessTokenSecurityService;
+import com.raccoons.tda.auth.service.security.EncryptionService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 @Service
 public class AccessTokenRepositoryService {
 
-//    @Autowired
-//    private SecureAccessTokenRepository secureAccessTokenRepository;
+    private static final Logger logger = LogManager.getLogger(AccessTokenRepositoryService.class);
+
+    @Autowired
+    private SecureAccessTokenRepository secureAccessTokenRepository;
 
     @Autowired
     private EncryptionService encryptionService;
 
-    public CompletableFuture<Optional<AccessToken>> getAccessToken(final String owner) {
-        return null;
-    }
+    @Autowired
+    private ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
-    public CompletableFuture<String> storeAccessToken(final AccessToken accessToken) {
-        return null;
-    }
+    @Autowired
+    private AccessTokenSecurityService accessTokenSecurityService;
 
-    public CompletableFuture<Void> deleteAccessToken(final String owner) {
-        return null;
-    }
-
-    public void pruneRepository() {
-
-    }
-
-    private AccessToken decrypt(final SecureAccessToken secureAccessToken) {
-        final AccessToken accessToken = new AccessToken();
-
-        final String secureOwner = secureAccessToken.getOwner();
-        final String secureAccessTokenValue = secureAccessToken.getAccessToken();
-        final String secureRefreshTokenValue = secureAccessToken.getRefreshToken();
-
-        if (secureOwner != null) {
-            final String decryptedOwner = encryptionService.decryptValue(secureOwner);
+    public CompletableFuture<Optional<AccessToken>> getAccessToken(final long requestId, final String owner) {
+        final String ownerEntry = accessTokenSecurityService.encryptAndWrapOwner(owner);
+        logger.trace("[{}] Fetching access token from repository.", requestId);
+        try {
+            return secureAccessTokenRepository.findTopByOwner(ownerEntry).thenApply(secureAccessToken -> {
+                logger.trace("[{}] Decrypting SecureAccessToken.", requestId);
+                return secureAccessToken.map(accessToken -> accessTokenSecurityService.decrypt(accessToken));
+            });
+        } catch (Exception e) {
+            logger.error(e);
+            return CompletableFuture.completedFuture(Optional.empty());
         }
-
-        if (secureAccessTokenValue != null) {
-            final String decryptedAccessToken = encryptionService.decryptValue(secureAccessTokenValue);
-        }
-
-        if (secureRefreshTokenValue != null) {
-            final String decryptedRefreshToken = encryptionService.decryptValue(secureRefreshTokenValue);
-        }
-
-        return accessToken;
     }
 
-    private SecureAccessToken encrypt(final AccessToken accessToken) {
-        final SecureAccessToken secureAccessToken = new SecureAccessToken();
+    public CompletableFuture<String> storeAccessToken(final long requestId, final AccessToken accessToken) {
+        logger.trace("[{}] Starting access token storage in repository.", requestId);
+        final SecureAccessToken secureAccessToken = accessTokenSecurityService.encrypt(accessToken);
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                final SecureAccessToken s = secureAccessTokenRepository.save(secureAccessToken);
+                logger.info("[{}] Secured access token was successfully stored in the repository.", requestId);
+                return "";
+            } catch (Exception e) {
+                logger.error("[{}] Error occurred while trying to store secured access token in the repository.",requestId, e);
+                return null;
+            }
+        }, threadPoolTaskScheduler);
+    }
 
-        final String owner = secureAccessToken.getOwner();
-        final String accessTokenValue = secureAccessToken.getAccessToken();
-        final String refreshTokenValue = secureAccessToken.getRefreshToken();
+    public CompletableFuture<Boolean> deleteAccessToken(final long requestId, final String owner) {
+        final AccessToken accessToken = AccessToken.newBuilder().owner(owner).build();
+        final SecureAccessToken secureAccessToken = accessTokenSecurityService.encrypt(accessToken);
 
-        return secureAccessToken;
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                logger.trace("[{}] Deleting access token from repository.", requestId);
+                secureAccessTokenRepository.delete(secureAccessToken);
+                return true;
+            } catch (Exception e) {
+                logger.error("[{}] Error occurred while attempting to delete access token from repository", requestId, e);
+                return false;
+            }
+        }, threadPoolTaskScheduler);
     }
 }

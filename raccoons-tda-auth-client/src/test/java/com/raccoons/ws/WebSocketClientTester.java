@@ -8,16 +8,23 @@ public class WebSocketClientTester {
 
     @Test
     public void testAccessToken() throws InterruptedException {
-        final String ws = "ws://localhost:8080/connection";
-        final String owner = "owner1";
+        final String ws = "ws://localhost:8080/connect";
+        final String owner = "kevinwchan2";
 
         final RaccoonsTDAAuthClient authClient = new RaccoonsTDAAuthClient(ws);
-        final String accessToken = authClient.getAccessToken(owner);
+        final RaccoonsTDAAuthClient authClient2 = new RaccoonsTDAAuthClient(ws);
 
-        System.out.println(accessToken);
-        Thread.sleep(2500);
-        System.out.println("token: " + authClient.getAccessToken(owner));
-        Thread.sleep(2500);
+        final String ac = authClient.getAccessToken(owner);
+        final String ac2 = authClient2.getAccessToken(owner);
+
+        Thread.sleep(3500);
+        authClient.refreshAccessToken(owner);
+        Thread.sleep(3500);
+
+        System.out.println(authClient.getAccessToken(owner));
+        authClient.getAccessToken(owner);
+
+        Thread.sleep(17000);
 
         Assert.assertEquals(1L, 1L);
     }

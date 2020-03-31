@@ -1,25 +1,30 @@
 package com.raccoons.tda.auth.model.token;
 
-
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(name = "updateOrInsertAccessToken", procedureName = "update_or_insert_access_token",
+                resultClasses = SecureAccessToken.class)
+})
 public class SecureAccessToken {
 
     @Id
-    private Long id;
+    @Column(unique = true, nullable = false)
     private String owner;
+
+    @Column(length = 2048)
     private String accessToken;
+
+    @Column(length = 2048)
     private String refreshToken;
+
     private Date accessTokenExpiration;
     private Date refreshTokenExpiration;
 
-//    @Enumerated(EnumType.STRING)
-//    private TokenState tokenState;
+    @Enumerated(EnumType.STRING)
+    private TokenState tokenState;
 
     public String getOwner() {
         return owner;
@@ -31,6 +36,14 @@ public class SecureAccessToken {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+
+    public Date getAccessTokenExpiration() {
+        return accessTokenExpiration;
+    }
+
+    public Date getRefreshTokenExpiration() {
+        return refreshTokenExpiration;
     }
 
     public void setOwner(String owner) {
@@ -45,15 +58,11 @@ public class SecureAccessToken {
         this.refreshToken = refreshToken;
     }
 
-    public Long getId() {
-        return id;
+    public void setAccessTokenExpiration(Date accessTokenExpiration) {
+        this.accessTokenExpiration = accessTokenExpiration;
     }
 
-    public Date getAccessTokenExpiration() {
-        return accessTokenExpiration;
-    }
-
-    public Date getRefreshTokenExpiration() {
-        return refreshTokenExpiration;
+    public void setRefreshTokenExpiration(Date refreshTokenExpiration) {
+        this.refreshTokenExpiration = refreshTokenExpiration;
     }
 }

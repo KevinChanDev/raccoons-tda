@@ -3,56 +3,86 @@ package com.raccoons.tda.auth.model.token;
 
 public class AccessToken {
 
-    private String owner;
-    private String accessToken;
-    private String refreshToken;
-    private long accessTokenExpiration;
-    private long refreshTokenExpiration;
+    private final String owner;
+    private final String accessToken;
+    private final String refreshToken;
+    private final long accessTokenExpiration;
+    private final long refreshTokenExpiration;
 
-    public AccessToken() {
-    }
-
-    public AccessToken(String accessToken) {
+    public AccessToken(String owner, String accessToken, String refreshToken, long accessTokenExpiration,
+                       long refreshTokenExpiration) {
+        this.owner = owner;
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.accessTokenExpiration = Math.max(0, accessTokenExpiration);
+        this.refreshTokenExpiration = Math.max(0, refreshTokenExpiration);
     }
 
     public String getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
     public String getAccessToken() {
         return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 
     public String getRefreshToken() {
         return refreshToken;
     }
 
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
     public long getAccessTokenExpiration() {
         return accessTokenExpiration;
-    }
-
-    public void setAccessTokenExpiration(long accessTokenExpiration) {
-        this.accessTokenExpiration = accessTokenExpiration;
     }
 
     public long getRefreshTokenExpiration() {
         return refreshTokenExpiration;
     }
 
-    public void setRefreshTokenExpiration(long refreshTokenExpiration) {
-        this.refreshTokenExpiration = refreshTokenExpiration;
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private long id;
+        private String owner;
+        private String accessToken;
+        private String refreshToken;
+        private long accessTokenExpiration;
+        private long refreshTokenExpiration;
+
+        public Builder id(final long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder owner(final String owner) {
+            this.owner = owner;
+            return this;
+        }
+
+        public Builder accessToken(final String accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
+
+        public Builder refreshToken(final String refreshToken) {
+            this.refreshToken = refreshToken;
+            return this;
+        }
+
+        public Builder accessTokenExpiration(final long accessTokenExpiration) {
+            this.accessTokenExpiration = accessTokenExpiration;
+            return this;
+        }
+
+        public Builder refreshTokenExpiration(final long refreshTokenExpiration) {
+            this.refreshTokenExpiration = refreshTokenExpiration;
+            return this;
+        }
+
+        public AccessToken build() {
+            return new AccessToken(owner, accessToken, refreshToken, accessTokenExpiration, refreshTokenExpiration);
+        }
     }
 }

@@ -29,24 +29,23 @@ public class OAuth2AccessTokenResponse {
             this.tokenType = tokenType;
 
             if (expiresIn instanceof Integer) {
-                this.expiresIn = ((Integer) expiresIn).longValue();
+                this.expiresIn = ((Integer) expiresIn).longValue() * 1000;
             } else if (expiresIn instanceof Long) {
-                this.expiresIn = (long) expiresIn;
+                this.expiresIn = (long) expiresIn * 1000;
             } else {
                 valid = false;
             }
 
             if (refreshTokenExpiresIn instanceof Integer) {
-                this.refreshTokenExpiresIn = ((Integer) refreshTokenExpiresIn).longValue();
+                this.refreshTokenExpiresIn = ((Integer) refreshTokenExpiresIn).longValue() * 1000;
             } else if (refreshTokenExpiresIn instanceof Long) {
-                this.refreshTokenExpiresIn = (long) refreshTokenExpiresIn;
+                this.refreshTokenExpiresIn = (long) refreshTokenExpiresIn * 1000;
             } else {
                 valid = false;
             }
 
             valid = true;
         } catch (Exception e) {
-            e.printStackTrace();
             valid = false;
         }
     }

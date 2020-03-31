@@ -1,4 +1,4 @@
-package com.raccoons.tda.mapper;
+package com.raccoons.tda.api.mapper;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

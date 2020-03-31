@@ -1,6 +1,8 @@
 package com.raccoons.tda.api.client;
 
-public class TDAClient {
+import com.raccoons.tda.context.TDAContext;
+
+public class TDAClient extends BaseClient {
 
     private final AccountClient accountClient;
     private final InstrumentClient instrumentClient;
@@ -11,96 +13,53 @@ public class TDAClient {
     private final QuoteClient quoteClient;
     private final TransactionHistoryClient transactionHistoryClient;
     private final UserInfoClient userInfoClient;
-    private final RequestClient requestClient;
 
-    public TDAClient(RequestClient requestClient) {
-        this.requestClient = requestClient;
-        this.accountClient = new AccountClient(requestClient);
-        this.instrumentClient = new InstrumentClient(requestClient);
-        this.marketHourClient = new MarketHourClient(requestClient);
-        this.moverClient = new MoverClient(requestClient);
-        this.optionChainClient = new OptionChainClient(requestClient);
-        this.priceHistoryClient = new PriceHistoryClient(requestClient);
-        this.quoteClient = new QuoteClient(requestClient);
-        this.transactionHistoryClient = new TransactionHistoryClient(requestClient);
-        this.userInfoClient = new UserInfoClient(requestClient);
+    public TDAClient(TDAContext tdaContext) {
+        super(tdaContext);
+        this.accountClient = new AccountClient(tdaContext);
+        this.instrumentClient = new InstrumentClient(tdaContext);
+        this.marketHourClient = new MarketHourClient(tdaContext);
+        this.moverClient = new MoverClient(tdaContext);
+        this.optionChainClient = new OptionChainClient(tdaContext);
+        this.priceHistoryClient = new PriceHistoryClient(tdaContext);
+        this.quoteClient = new QuoteClient(tdaContext);
+        this.transactionHistoryClient = new TransactionHistoryClient(tdaContext);
+        this.userInfoClient = new UserInfoClient(tdaContext);
     }
 
-    public AccountClient accountClient() {
+    public AccountClient getAccountClient() {
         return accountClient;
     }
 
-    public InstrumentClient instrumentClient() {
+    public InstrumentClient getInstrumentClient() {
         return instrumentClient;
     }
 
-    public MarketHourClient marketHourClient() {
+    public MarketHourClient getMarketHourClient() {
         return marketHourClient;
     }
 
-    public MoverClient moverClient() {
+    public MoverClient getMoverClient() {
         return moverClient;
     }
 
-    public OptionChainClient optionChainClient() {
+    public OptionChainClient getOptionChainClient() {
         return optionChainClient;
     }
 
-    public PriceHistoryClient priceHistoryClient() {
+    public PriceHistoryClient getPriceHistoryClient() {
         return priceHistoryClient;
     }
 
-    public QuoteClient quoteClient() {
+    public QuoteClient getQuoteClient() {
         return quoteClient;
     }
 
-    public TransactionHistoryClient transactionHistoryClient() {
+    public TransactionHistoryClient getTransactionHistoryClient() {
         return transactionHistoryClient;
     }
 
-    public UserInfoClient userInfoClient() {
+    public UserInfoClient getUserInfoClient() {
         return userInfoClient;
     }
-
-    public RequestClient getRequestClient() {
-        return requestClient;
-    }
-
-    /*
-    public static Accounts accounts(AccountContext accountContext) {
-        return new Accounts(accountContext);
-    }
-
-    public static Instruments instruments(AccountContext accountContext) {
-        return new Instruments(accountContext);
-    }
-
-    public static MarketHours marketHours(AccountContext accountContext) {
-        return new MarketHours(accountContext);
-    }
-
-    public static Movers movers(AccountContext accountContext) {
-        return new Movers(accountContext);
-    }
-
-    public static OptionChains optionChains(AccountContext accountContext) {
-        return new OptionChains(accountContext);
-    }
-
-    public static PriceHistory priceHistory(AccountContext accountContext) {
-        return new PriceHistory(accountContext);
-    }
-
-    public static Quotes quotes(AccountContext accountContext) {
-        return new Quotes(accountContext);
-    }
-
-    public static TransactionHistory transactionHistory(AccountContext accountContext) {
-        return new TransactionHistory(accountContext);
-    }
-
-    public static UserInfo userInfo(AccountContext accountContext) {
-        return new UserInfo(accountContext);
-    }
-    */
 }

@@ -1,5 +1,8 @@
 package com.raccoons.tda.auth.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.nio.charset.StandardCharsets;
 import java.security.spec.KeySpec;
 import java.util.Base64;
@@ -12,6 +15,8 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESCryptography {
+
+    private static final Logger logger = LogManager.getLogger(AESCryptography.class);
 
     private static final int IV_LENGTH = 16;
     private static final int ITERATIONS = 65536;
@@ -40,6 +45,7 @@ public class AESCryptography {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
             return Base64.getEncoder().encodeToString(cipher.doFinal(value.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
+            logger.error(e);
             return null;
         }
     }
@@ -57,6 +63,7 @@ public class AESCryptography {
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
             return new String(cipher.doFinal(Base64.getDecoder().decode(value)));
         } catch (Exception e) {
+            logger.error(e);
             return null;
         }
     }

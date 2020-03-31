@@ -1,23 +1,52 @@
 package com.raccoons.tda.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
 public class UserPrincipal {
 
+    @JsonProperty("authToken")
     private String authToken;
+
+    @JsonProperty("userId")
     private String userId;
+
+    @JsonProperty("userCdDomainId")
     private String userCdDomainId;
+
+    @JsonProperty("primaryAccountId")
     private String primaryAccountId;
+
+    @JsonProperty("lastLoginTime")
     private String lastLoginTime;
+
+    @JsonProperty("tokenExpirationTime")
     private String tokenExpirationTime;
+
+    @JsonProperty("loginTime")
     private String loginTime;
+
+    @JsonProperty("accessLevel")
     private String accessLevel;
+
+    @JsonProperty("stalePassword")
     private boolean stalePassword;
+
+    @JsonProperty("professionalStatus")
     private String professionalStatus;
+
+    @JsonProperty("streamerSubscriptionKeys")
     private StreamerSubscriptionKeys streamerSubscriptionKeys;
+
+    @JsonProperty("quotes")
     private Quotes quotes;
+
+    @JsonProperty("accounts")
     private List<Account> accounts;
+
+    @JsonProperty("streamerInfo")
     private StreamerInfo streamerInfo;
 
     public String getAuthToken() {
@@ -78,13 +107,28 @@ public class UserPrincipal {
 
     public static class StreamerInfo {
 
+        @JsonProperty("streamerBinaryUrl")
         private String streamerBinaryUrl;
+
+        @JsonProperty("streamerSocketUrl")
         private String streamerSocketUrl;
+
+        @JsonProperty("token")
         private String token;
+
+        @JsonProperty("tokenTimestamp")
         private String tokenTimestamp;
+
+        @JsonProperty("userGroup")
         private String userGroup;
+
+        @JsonProperty("accessLevel")
         private String accessLevel;
+
+        @JsonProperty("acl")
         private String acl;
+
+        @JsonProperty("appId")
         private String appId;
 
         public String getStreamerBinaryUrl() {
@@ -122,12 +166,25 @@ public class UserPrincipal {
 
     public static class Quotes {
 
+        @JsonProperty("isNyseDelayed")
         private boolean isNyseDelayed;
+
+        @JsonProperty("isNasdaqDelayed")
         private boolean isNasdaqDelayed;
+
+        @JsonProperty("isOpraDelayed")
         private boolean isOpraDelayed;
+
+        @JsonProperty("isAmexDelayed")
         private boolean isAmexDelayed;
+
+        @JsonProperty("isCmeDelayed")
         private boolean isCmeDelayed;
+
+        @JsonProperty("isIceDelayed")
         private boolean isIceDelayed;
+
+        @JsonProperty("isForexDelayed")
         private boolean isForexDelayed;
 
         public boolean getIsNyseDelayed() {
@@ -162,6 +219,7 @@ public class UserPrincipal {
 
     public static class StreamerSubscriptionKeys {
 
+        @JsonProperty("keys")
         private List<Key> keys;
 
         public List<Key> getKeys() {
@@ -180,14 +238,31 @@ public class UserPrincipal {
 
     public static class Account {
 
+        @JsonProperty("accountId")
         private String accountId;
+
+        @JsonProperty("displayName")
         private String displayName;
+
+        @JsonProperty("accountCdDomainId")
         private String accountCdDomainId;
+
+        @JsonProperty("company")
         private String company;
+
+        @JsonProperty("segment")
         private String segment;
+
+        @JsonProperty("acl")
         private String acl;
+
+        @JsonProperty("authorizations")
         private Authorizations authorizations;
+
+        @JsonProperty("preferences")
         private Preferences preferences;
+
+        @JsonProperty("surrogateIds")
         private Map<String, Object> surrogateIds;
 
         public String getAccountId() {
@@ -228,14 +303,31 @@ public class UserPrincipal {
 
         public static class Authorizations {
 
+            @JsonProperty("apex")
             private boolean apex;
+
+            @JsonProperty("levelTwoQuotes")
             private boolean levelTwoQuotes;
+
+            @JsonProperty("stockTrading")
             private boolean stockTrading;
+
+            @JsonProperty("marginTrading")
             private boolean marginTrading;
+
+            @JsonProperty("streamingNews")
             private boolean streamingNews;
+
+            @JsonProperty("streamerAccess")
             private boolean streamerAccess;
+
+            @JsonProperty("advancedMargin")
             private boolean advancedMargin;
+
+            @JsonProperty("scottradeAccount")
             private boolean scottradeAccount;
+
+            @JsonProperty("optionTradingLevel")
             private String optionTradingLevel;
 
             public boolean getApex() {
@@ -277,19 +369,46 @@ public class UserPrincipal {
 
         public static class Preferences {
 
+            @JsonProperty("expressTrading")
             private boolean expressTrading;
+
+            @JsonProperty("directOptionsRouting")
             private boolean directOptionsRouting;
+
+            @JsonProperty("directEquityRouting")
             private boolean directEquityRouting;
+
+            @JsonProperty("defaultEquityOrderLegInstruction")
             private String defaultEquityOrderLegInstruction;
+
+            @JsonProperty("defaultEquityOrderType")
             private String defaultEquityOrderType;
+
+            @JsonProperty("defaultEquityOrderPriceLinkType")
             private String defaultEquityOrderPriceLinkType;
+
+            @JsonProperty("defaultEquityOrderDuration")
             private String defaultEquityOrderDuration;
+
+            @JsonProperty("defaultEquityOrderMarketSession")
             private String defaultEquityOrderMarketSession;
+
+            @JsonProperty("defaultEquityQuantity")
             private int defaultEquityQuantity;
+
+            @JsonProperty("mutualFundTaxLotMethod")
             private String mutualFundTaxLotMethod;
+
+            @JsonProperty("optionTaxLotMethod")
             private String optionTaxLotMethod;
+
+            @JsonProperty("equityTaxLotMethod")
             private String equityTaxLotMethod;
+
+            @JsonProperty("defaultAdvancedToolLaunch")
             private String defaultAdvancedToolLaunch;
+
+            @JsonProperty("authTokenTimeout")
             private String authTokenTimeout;
 
             public boolean isExpressTrading() {

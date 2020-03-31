@@ -3,18 +3,19 @@ package com.raccoons.tda.auth.client.ws;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.raccoons.auth.lib.AccessTokenRequest;
-import com.raccoons.auth.lib.AccessTokenResponse;
-import com.raccoons.auth.lib.AccessTokenResponseType;
+import com.raccoons.auth.lib.ServiceRequest;
+import com.raccoons.auth.lib.message.ServiceMessage;
+import com.raccoons.auth.lib.ServiceMessageType;
 
 import java.net.http.WebSocket;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AccessTokenDriver implements WebSocket.Listener {
 
-    private static final TypeReference<AccessTokenResponse> RESPONSE_TYPE_REFERENCE = new TypeReference<>() {
+    private static final TypeReference<ServiceMessage> SERVICE_MESSAGE_REFERENCE = new TypeReference<>() {
     };
 
     private AtomicBoolean connected;
@@ -43,22 +44,27 @@ public class AccessTokenDriver implements WebSocket.Listener {
         if (listener != null) {
             final String jsonData = data.toString();
             try {
-                final AccessTokenResponse response = objectMapper.readValue(jsonData, RESPONSE_TYPE_REFERENCE);
-                final int responseType = response.getResponseType();
+                final ServiceMessage response = objectMapper.readValue(jsonData, SERVICE_MESSAGE_REFERENCE);
+                final int responseType = response.getMessageType();
 
-                if (responseType == AccessTokenResponseType.ACCESS_TOKEN || responseType == AccessTokenResponseType.REFRESH_RESPONSE) {
-                    final String owner = response.getOwner();
-                    final String accessToken = response.getAccessToken();
+                if (responseType == ServiceMessageType.ACCESS_TOKEN || responseType == ServiceMessageType.REFRESH_RESPONSE) {
+                    final Map<String, Object> payload = response.getPayload();
+
+                    final String owner = (String) payload.get("owner");
+                    final String accessToken = (String) payload.get("access_token");
+                    final Object expiration = payload.get("access_token_expiration");
 
                     listener.onAccessToken(owner, accessToken);
-                } else if (responseType == AccessTokenResponseType.REVOKE_RESPONSE) {
-                    final String owner = response.getOwner();
+                } else if (responseType == ServiceMessageType.REVOKE_RESPONSE) {
+                    final Map<String, Object> payload = response.getPayload();
+                    final String owner = (String) payload.get("owner");
                     listener.onAccessTokenRevoked(owner);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
         webSocket.request(1L);
         return null;
     }
@@ -74,7 +80,7 @@ public class AccessTokenDriver implements WebSocket.Listener {
         error.printStackTrace();
     }
 
-    public CompletableFuture<WebSocket> sendRequest(AccessTokenRequest request) {
+    public CompletableFuture<WebSocket> sendRequest(ServiceRequest request) {
         try {
             final String requestString = objectMapper.writeValueAsString(request);
             return webSocket.sendText(requestString, true);

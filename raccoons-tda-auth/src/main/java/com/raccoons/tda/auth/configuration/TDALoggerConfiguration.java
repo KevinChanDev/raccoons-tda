@@ -1,6 +1,6 @@
 package com.raccoons.tda.auth.configuration;
 
-import com.raccoons.tda.auth.service.AuthService;
+import com.raccoons.tda.auth.service.AuthClientService;
 import com.raccoons.tda.logging.TDAInstructionLogger;
 import com.raccoons.tda.logging.TDALogger;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +13,7 @@ import java.util.Map;
 @Configuration
 public class TDALoggerConfiguration {
 
-    private static final Logger logger = LogManager.getLogger(AuthService.class);
+    private static final Logger logger = LogManager.getLogger(AuthClientService.class);
 
     @Bean
     public TDALogger tdaLogger() {

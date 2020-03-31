@@ -1,9 +1,10 @@
 package com.raccoons.tda.auth.controller;
 
 import com.raccoons.tda.api.model.UserPrincipal;
+import com.raccoons.tda.auth.component.RequestId;
 import com.raccoons.tda.auth.model.OAuth2AccessTokenResponse;
-import com.raccoons.tda.auth.service.AccessTokenService;
-import com.raccoons.tda.auth.service.AuthService;
+import com.raccoons.tda.auth.service.token.AccessTokenService;
+import com.raccoons.tda.auth.service.AuthClientService;
 import com.raccoons.tda.auth.util.Digest;
 import com.raccoons.tda.auth.util.RequestUserInfo;
 import com.raccoons.tda.auth.configuration.TDAAuthConfiguration;
@@ -29,13 +30,16 @@ public class OAuthController {
     private static final int FAILED_STATUS = 400;
 
     @Autowired
-    private AuthService authService;
+    private AuthClientService authClientService;
 
     @Autowired
     private AccessTokenService accessTokenService;
 
     @Autowired
     private TDAAuthConfiguration tdaAuthConfiguration;
+
+    @Autowired
+    private RequestId requestId;
 
     @RequestMapping(value = "/${tda.auth.mapping.login}", method = RequestMethod.GET)
     public CompletableFuture<ResponseEntity<Object>> login(final HttpServletRequest request) {
@@ -75,12 +79,12 @@ public class OAuthController {
         }
 
         if (code != null && !code.isEmpty()) {
-            return authService.authorize(code).thenCompose(r -> {
+            return authClientService.authorize(code).thenCompose(r -> {
                 if (logger.isInfoEnabled()) {
                     final String accessTokenSignature = Digest.sha256Hex(r.getAccessToken());
                     logger.info("Access Token Signature: {}", accessTokenSignature);
                 }
-                return authService.processUserOAuthToken(r);
+                return authClientService.processUserOAuthToken(r);
             }).thenCompose(userBoundToken -> {
                 if (userBoundToken != null) {
                     final UserPrincipal userPrincipal = userBoundToken.getUserPrincipal();
@@ -93,7 +97,7 @@ public class OAuthController {
                     logger.info("User registered: {}, Account Id: {}, Access Token Signature: {}.",
                             userId, primaryAccountId, accessTokenSignature);
 
-                    return accessTokenService.storeUserBoundToken(userBoundToken)
+                    return accessTokenService.storeUserBoundToken(requestId.getId(), userBoundToken)
                             .thenApply(b -> b ? ResponseEntity.ok().build() : ResponseEntity.status(FAILED_STATUS).build());
                 } else {
                     return CompletableFuture.completedFuture(ResponseEntity.status(FAILED_STATUS).build());

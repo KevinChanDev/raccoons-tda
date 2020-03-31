@@ -3,7 +3,7 @@ package com.raccoons.tda.auth.tests;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
-import com.raccoons.tda.auth.service.RedisService;
+import com.raccoons.tda.auth.service.data.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -39,7 +39,7 @@ public class RedisTests {
                 .thenCompose(s -> redisService.getValue(testKey2));
 
         assertEquals(testValue1, result1.get());
-        assertEquals(testValue1, result2.get());
+        assertEquals(testValue2, result2.get());
     }
 
     //@Test

@@ -7,7 +7,7 @@ plugins {
 group 'com.raccoons'
 version '0.1'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
@@ -21,6 +21,7 @@ configurations {
 
 dependencies {
     implementation 'io.lettuce:lettuce-core:5.2.1.RELEASE'
+    implementation 'com.google.guava:guava:28.2-jre'
 
     implementation 'org.springframework.security:spring-security-core:5.2.1.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
