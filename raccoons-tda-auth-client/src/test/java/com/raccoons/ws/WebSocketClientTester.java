@@ -12,18 +12,14 @@ public class WebSocketClientTester {
         final String owner = "kevinwchan2";
 
         final RaccoonsTDAAuthClient authClient = new RaccoonsTDAAuthClient(ws);
-        final RaccoonsTDAAuthClient authClient2 = new RaccoonsTDAAuthClient(ws);
 
         final String ac = authClient.getAccessToken(owner);
-        final String ac2 = authClient2.getAccessToken(owner);
-
         Thread.sleep(3500);
+        System.out.println(ac);
         authClient.refreshAccessToken(owner);
         Thread.sleep(3500);
 
-        System.out.println(authClient.getAccessToken(owner));
-        authClient.getAccessToken(owner);
-
+        //System.out.println(authClient.getAccessToken(owner));
         Thread.sleep(17000);
 
         Assert.assertEquals(1L, 1L);

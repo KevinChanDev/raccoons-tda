@@ -10,9 +10,9 @@ public class PruningService {
 
     private static final Logger logger = LogManager.getLogger(PruningService.class);
 
-    @Scheduled(cron = "0 0 * * *")
-    private void pruneExpired() {
-        logger.info("Pruning expired data entries.");
-    }
+//    @Scheduled(cron = "0 0 * * *")
+//    private void pruneExpired() {
+//        logger.info("Pruning expired data entries.");
+//    }
 
 }

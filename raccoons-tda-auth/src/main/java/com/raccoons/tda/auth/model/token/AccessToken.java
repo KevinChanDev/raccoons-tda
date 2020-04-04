@@ -44,17 +44,11 @@ public class AccessToken {
 
     public static class Builder {
 
-        private long id;
         private String owner;
         private String accessToken;
         private String refreshToken;
         private long accessTokenExpiration;
         private long refreshTokenExpiration;
-
-        public Builder id(final long id) {
-            this.id = id;
-            return this;
-        }
 
         public Builder owner(final String owner) {
             this.owner = owner;

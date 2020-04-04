@@ -6,7 +6,7 @@ import com.raccoons.tda.auth.model.UserBoundToken;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.model.token.ExpiringAccessToken;
 import com.raccoons.tda.auth.service.AuthClientService;
-import com.raccoons.tda.auth.service.RefreshingService;
+import com.raccoons.tda.auth.service.AccessTokenRefreshingService;
 import com.raccoons.tda.auth.service.data.AccessTokenCacheService;
 import com.raccoons.tda.auth.service.data.AccessTokenRedisService;
 import com.raccoons.tda.auth.service.data.AccessTokenRepositoryService;
@@ -50,7 +50,7 @@ public class AccessTokenService {
     private AuthClientService authClientService;
 
     @Autowired
-    private RefreshingService refreshingService;
+    private AccessTokenRefreshingService accessTokenRefreshingService;
 
     private Map<String, ExpiringAccessToken> accessTokens;
 
@@ -176,7 +176,6 @@ public class AccessTokenService {
 
     public CompletableFuture<Boolean> removeAccessToken(final long requestId, final String owner) {
         //final CompletableFuture<String> redis = storeAccessTokenRedis(accessToken);
-
         return null;
     }
 
@@ -190,7 +189,7 @@ public class AccessTokenService {
 
                         return persistAccessToken(requestId, a.get()).thenApply(accessToken -> {
                             if (accessToken != null) {
-                                accessTokenEventService.onAccessTokenUpdated(accessToken);
+                                accessTokenEventService.onAccessTokenUpdated(requestId, accessToken);
                             }
                             return Optional.ofNullable(accessToken);
                         });
@@ -223,7 +222,7 @@ public class AccessTokenService {
         if (owner != null && refreshToken != null) {
             return authClientService.refreshAccessToken(accessToken).thenApply(response -> {
                 if (response.isValid()) {
-                    refreshingService.updateRefreshTime(owner);
+                    accessTokenRefreshingService.updateRefreshTime(owner);
 
                     logger.trace("[{}] Building new AccessToken from valid refresh response.", requestId);
 

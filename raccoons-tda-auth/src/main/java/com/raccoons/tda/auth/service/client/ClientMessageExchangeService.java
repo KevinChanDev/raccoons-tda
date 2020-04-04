@@ -9,6 +9,7 @@ import com.raccoons.tda.auth.service.request.RequestQueueService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
@@ -60,6 +61,7 @@ public class ClientMessageExchangeService {
         }
     }
 
+    @Async
     public CompletableFuture<String> sendMessage(final ClientSession clientSession, final ServiceMessage serviceMessage) {
         if (clientSession == null) {
             logger.trace("Could not send message {}, the ClientSession is null.", serviceMessage.getId());
@@ -77,7 +79,7 @@ public class ClientMessageExchangeService {
                         logger.error(e);
                         return null;
                     }
-                }, threadPoolTaskScheduler);
+                });
             } else {
                 logger.trace("Could not send message to {}. No string message could be determined from the ServiceMessage.",
                         clientSession.getSessionId());

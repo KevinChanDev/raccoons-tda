@@ -46,7 +46,7 @@ public class AccessTokenDriver implements WebSocket.Listener {
             try {
                 final ServiceMessage response = objectMapper.readValue(jsonData, SERVICE_MESSAGE_REFERENCE);
                 final int responseType = response.getMessageType();
-
+                System.out.println("Service Message: " + ServiceMessageType.ACCESS_TOKEN);
                 if (responseType == ServiceMessageType.ACCESS_TOKEN || responseType == ServiceMessageType.REFRESH_RESPONSE) {
                     final Map<String, Object> payload = response.getPayload();
 
