@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raccoons.auth.lib.ServiceRequest;
 import com.raccoons.auth.lib.message.ServiceMessage;
 import com.raccoons.auth.lib.ServiceMessageType;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.net.http.WebSocket;
 import java.util.Map;
@@ -14,6 +16,8 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AccessTokenDriver implements WebSocket.Listener {
+
+    private static final Logger logger = LogManager.getLogger(AccessTokenDriver.class);
 
     private static final TypeReference<ServiceMessage> SERVICE_MESSAGE_REFERENCE = new TypeReference<>() {
     };
@@ -46,7 +50,9 @@ public class AccessTokenDriver implements WebSocket.Listener {
             try {
                 final ServiceMessage response = objectMapper.readValue(jsonData, SERVICE_MESSAGE_REFERENCE);
                 final int responseType = response.getMessageType();
-                System.out.println("Service Message: " + ServiceMessageType.ACCESS_TOKEN);
+
+                logger.trace("Service message of type {} received.", responseType);
+
                 if (responseType == ServiceMessageType.ACCESS_TOKEN || responseType == ServiceMessageType.REFRESH_RESPONSE) {
                     final Map<String, Object> payload = response.getPayload();
 

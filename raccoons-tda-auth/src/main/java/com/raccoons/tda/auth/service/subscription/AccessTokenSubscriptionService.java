@@ -30,6 +30,14 @@ public class AccessTokenSubscriptionService {
         return new ClientSession[0];
     }
 
+    public int countSubscribers(final String subscription) {
+        final Set<ClientSession> clientSessions = subscriptionClients.get(subscription);
+        if (clientSessions != null) {
+            return clientSessions.size();
+        }
+        return 0;
+    }
+
     public boolean isSubscribed(final ClientSession clientSession, final String subscription) {
         final Set<ClientSession> sessions = subscriptionClients.get(subscription);
         return sessions != null && sessions.contains(clientSession);
@@ -43,7 +51,10 @@ public class AccessTokenSubscriptionService {
 
     public void removeSession(final ClientSession session) {
         if (session != null) {
+            logger.trace("Removing {} from subscription service.", session.getSessionId());
             final String[] subscriptions = session.getSubscriptions();
+            logger.trace("Removing {} subscriptions from {}.", subscriptions.length, session.getSessionId());
+
             Set<ClientSession> clientSessions;
             for (String s : subscriptions) {
                 clientSessions = subscriptionClients.get(s);

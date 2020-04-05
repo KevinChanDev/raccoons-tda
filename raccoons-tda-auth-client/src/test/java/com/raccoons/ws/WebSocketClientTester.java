@@ -20,7 +20,7 @@ public class WebSocketClientTester {
         Thread.sleep(3500);
 
         //System.out.println(authClient.getAccessToken(owner));
-        Thread.sleep(17000);
+        Thread.sleep(180000000L);
 
         Assert.assertEquals(1L, 1L);
     }

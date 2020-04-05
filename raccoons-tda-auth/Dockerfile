@@ -1,4 +1,5 @@
 FROM gradle:6.2.1-jdk11 AS build
+
 # Copy everything from the current directory to /home/gradle/src and set the owner to the 'gradle' user
 COPY --chown=gradle:gradle . /home/gradle/src
 

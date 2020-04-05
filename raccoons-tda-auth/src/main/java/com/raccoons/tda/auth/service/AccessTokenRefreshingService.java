@@ -2,6 +2,7 @@ package com.raccoons.tda.auth.service;
 
 import com.raccoons.tda.auth.component.RequestId;
 import com.raccoons.tda.auth.model.token.AccessToken;
+import com.raccoons.tda.auth.service.subscription.AccessTokenSubscriptionService;
 import com.raccoons.tda.auth.service.token.AccessTokenService;
 import com.raccoons.tda.auth.util.DelayedModificationQueue;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
@@ -46,6 +46,9 @@ public class AccessTokenRefreshingService {
     private AccessTokenService accessTokenService;
 
     @Autowired
+    private AccessTokenSubscriptionService accessTokenSubscriptionService;
+
+    @Autowired
     private RequestId requestId;
 
     @Autowired
@@ -68,40 +71,26 @@ public class AccessTokenRefreshingService {
         running = new AtomicBoolean();
     }
 
-    @Scheduled(initialDelay = 30000, fixedDelay = 120000)
+    @Scheduled(initialDelay = 30000, fixedDelay = 60000)
     private void refreshingTask() {
         if (!running.get()) {
             running.set(true);
         }
-
         try {
             while (running.get()) {
                 final String owner = refreshableQueue.take();
-                logger.trace("Processing queued owner {}.", owner);
-                refreshByOwner(owner);
+                if (owner != null) {
+                    final int numSubscribers = accessTokenSubscriptionService.countSubscribers(owner);
+                    if (numSubscribers > 0) {
+                        logger.trace("Processing queued owner {}.", owner);
+                        refreshByOwner(owner);
+                    } else {
+                        logger.trace("Skipping queued owner {} no subscribers.", owner);
+                    }
+                }
             }
         } catch (Exception e) {
             running.set(false);
-        }
-    }
-
-    public void start() {
-        if (refreshEnable) {
-            scheduledFuture = threadPoolTaskScheduler.getScheduledExecutor().scheduleWithFixedDelay(() -> {
-                while (true) {
-                    try {
-                        processQueue();
-                    } catch (Exception e) {
-                        logger.error(e);
-                    }
-                }
-            }, 0, refreshFrequency, TimeUnit.MILLISECONDS);
-        }
-    }
-
-    public void stop() {
-        if (scheduledFuture != null && !scheduledFuture.isCancelled()) {
-            scheduledFuture.cancel(true);
         }
     }
 
@@ -149,5 +138,4 @@ public class AccessTokenRefreshingService {
         }
         return CompletableFuture.completedFuture(Optional.empty());
     }
-
 }

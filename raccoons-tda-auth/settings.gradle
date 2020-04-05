@@ -1,0 +1,4 @@
+include ':raccoons-tda-api', ':raccoons-tda-auth-lib'
+
+project(':raccoons-tda-api').projectDir = file('../raccoons-tda-api')
+project(':raccoons-tda-auth-lib').projectDir = file('../raccoons-tda-auth-lib')

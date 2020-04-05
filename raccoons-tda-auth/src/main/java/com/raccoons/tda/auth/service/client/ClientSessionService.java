@@ -3,6 +3,7 @@ package com.raccoons.tda.auth.service.client;
 import com.raccoons.auth.lib.message.ServiceMessage;
 import com.raccoons.tda.auth.client.ClientSession;
 import com.raccoons.tda.auth.component.ServiceMessageSerializer;
+import com.raccoons.tda.auth.service.subscription.AccessTokenSubscriptionService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ClientSessionService {
 
     private static final Logger logger = LogManager.getLogger(ClientSessionService.class);
+
+    @Autowired
+    private AccessTokenSubscriptionService accessTokenSubscriptionService;
 
     @Autowired
     private ServiceMessageSerializer serviceMessageSerializer;
@@ -44,6 +48,7 @@ public class ClientSessionService {
             if (clientSession != null) {
                 clientSession.disconnect();
                 clientSessions.remove(sessionId);
+                accessTokenSubscriptionService.removeSession(clientSession);
             }
         }
     }

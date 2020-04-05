@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'application'
 }
 
 group 'com.raccoons'
@@ -15,7 +14,11 @@ repositories {
 dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.10'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.6'
+    implementation 'org.apache.logging.log4j:log4j-api:2.13.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.1'
+
     implementation project(':raccoons-tda-api')
     implementation project(':raccoons-tda-auth-lib')
+
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

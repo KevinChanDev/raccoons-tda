@@ -4,6 +4,8 @@ import com.raccoons.auth.lib.ServiceRequest;
 import com.raccoons.tda.auth.TDAAccessTokenProvider;
 import com.raccoons.tda.auth.client.util.BlockingConcurrentMap;
 import com.raccoons.tda.auth.client.ws.AccessTokenDriver;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,6 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class RaccoonsTDAAuthClient implements TDAAccessTokenProvider, AccessTokenDriver.Listener {
+
+    private static final Logger logger = LogManager.getLogger(RaccoonsTDAAuthClient.class);
 
     public static final int CONNECTED = 0;
     public static final int DISCONNECTED = 1;
@@ -104,7 +108,7 @@ public class RaccoonsTDAAuthClient implements TDAAccessTokenProvider, AccessToke
 
     @Override
     public void onAccessToken(String owner, String accessToken) {
-        System.out.println(String.format("%s -> %s", owner, accessToken));
+        logger.trace("Access token received for owner {} with length {}.", owner, accessToken.length());
         accessTokens.put(owner, accessToken);
     }
 
