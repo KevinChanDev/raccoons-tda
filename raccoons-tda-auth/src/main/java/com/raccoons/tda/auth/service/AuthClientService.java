@@ -6,12 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.raccoons.tda.api.client.AccountContext;
 import com.raccoons.tda.api.client.UserInfoClient;
 import com.raccoons.tda.auth.component.TDAClients;
+import com.raccoons.tda.auth.configuration.properties.ClientProperties;
+import com.raccoons.tda.auth.configuration.properties.EndpointProperties;
 import com.raccoons.tda.auth.model.OAuth2AccessTokenResponse;
 import com.raccoons.tda.auth.model.OAuth2RefreshAccessTokenResponse;
 import com.raccoons.tda.auth.model.UserBoundToken;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.util.Digest;
-import com.raccoons.tda.auth.configuration.TDAAuthConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,10 @@ public class AuthClientService {
     private static final String[] USER_PRINCIPLE_FIELDS = {"preferences", "surrogateIds"};
 
     @Autowired
-    private TDAAuthConfiguration authConfiguration;
+    private ClientProperties clientProperties;
+
+    @Autowired
+    private EndpointProperties endpointProperties;
 
     @Autowired
     private HttpClientService httpClientService;
@@ -49,22 +53,6 @@ public class AuthClientService {
     @PostConstruct
     public void init() throws ConfigurationException {
         logger.trace("Initializing AuthService instance.");
-        if (authConfiguration.getClientId() == null) {
-            throw new ConfigurationException("Failed to initialize AuthService: Client ID not provided.");
-        }
-
-        if (authConfiguration.getRedirectUri() == null) {
-            throw new ConfigurationException("Failed to initialize AuthService: Redirect URI not provided.");
-        }
-
-        if (authConfiguration.getTokenEndpoint() == null) {
-            throw new ConfigurationException("Failed to initialize AuthService: Token Endpoint not provided.");
-        }
-
-        if (authConfiguration.getAuthEndpoint() == null) {
-            throw new ConfigurationException("Failed to initialize AuthService: Auth Endpoint not provided.");
-        }
-        logger.trace("Initialized AuthService instance.");
     }
 
     /**
@@ -82,7 +70,7 @@ public class AuthClientService {
             logger.info("Authorizing with Auth Code Signature: {}", codeSignature);
         }
 
-        final String endpoint = authConfiguration.getTokenEndpoint();
+        final String endpoint = endpointProperties.getToken();
 
         // Form Data
         final Map<String, Object> formData = new HashMap<>();
@@ -90,8 +78,8 @@ public class AuthClientService {
         formData.put("grant_type", "authorization_code");
         formData.put("access_type", "offline");
         formData.put("code", code);
-        formData.put("client_id", authConfiguration.getClientId());
-        formData.put("redirect_uri", authConfiguration.getRedirectUri());
+        formData.put("client_id", clientProperties.getId());
+        formData.put("redirect_uri", clientProperties.getRedirectUri());
 
         final Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded");
@@ -110,7 +98,7 @@ public class AuthClientService {
 
                     final OAuth2AccessTokenResponse r = OAuth2AccessTokenResponse.of(values);
 
-                    if (r.isValid()){
+                    if (r.isValid()) {
                         logger.trace("OAuth2AccessTokenResponse created successfully.");
                     } else {
                         logger.trace("OAuth2AccessTokenResponse was not created.");
@@ -136,14 +124,14 @@ public class AuthClientService {
         }
 
         logger.info("Request to refresh access token initialized.");
-        final String endpoint = authConfiguration.getTokenEndpoint();
+        final String endpoint = endpointProperties.getToken();
         final String refreshToken = accessToken.getRefreshToken();
 
         if (refreshToken != null) {
             final Map<String, Object> formData = new HashMap<>();
             formData.put("grant_type", "refresh_token");
             formData.put("refresh_token", refreshToken);
-            formData.put("client_id", authConfiguration.getClientId());
+            formData.put("client_id", clientProperties.getId());
 
             final Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/x-www-form-urlencoded");
@@ -162,7 +150,7 @@ public class AuthClientService {
 
                         final OAuth2RefreshAccessTokenResponse r = OAuth2RefreshAccessTokenResponse.of(values);
 
-                        if (r.isValid()){
+                        if (r.isValid()) {
                             logger.trace("OAuth2RefreshAccessTokenResponse created successfully.");
                         } else {
                             logger.trace("OAuth2RefreshAccessTokenResponse was not created.");

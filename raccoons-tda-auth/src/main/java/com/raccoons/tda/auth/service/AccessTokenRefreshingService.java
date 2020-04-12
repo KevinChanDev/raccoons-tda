@@ -1,6 +1,7 @@
 package com.raccoons.tda.auth.service;
 
 import com.raccoons.tda.auth.component.RequestId;
+import com.raccoons.tda.auth.configuration.properties.RefreshProperties;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.service.subscription.AccessTokenSubscriptionService;
 import com.raccoons.tda.auth.service.token.AccessTokenService;
@@ -27,17 +28,8 @@ public class AccessTokenRefreshingService {
 
     private static final Logger logger = LogManager.getLogger(AccessTokenRefreshingService.class);
 
-    @Value("${tda.auth.refresh.enable}")
-    private boolean refreshEnable;
-
-    @Value("${tda.auth.refresh.frequency}")
-    private long refreshFrequency;
-
-    @Value("${tda.auth.refresh.threshold}")
-    private double refreshThreshold;
-
-    @Value("${tda.auth.refresh.time.threshold}")
-    private long timeThreshold;
+    @Autowired
+    private RefreshProperties refreshProperties;
 
     @Autowired
     private AuthClientService authClientService;
@@ -121,7 +113,7 @@ public class AccessTokenRefreshingService {
         if (currentTime > expiration) {
             enqueueRefreshable(requestId, owner, 1L);
         } else {
-            final long delay = Math.max(1L, expiration - currentTime - timeThreshold);
+            final long delay = Math.max(1L, expiration - currentTime - refreshProperties.getTimeThreshold());
             enqueueRefreshable(requestId, owner, delay);
         }
     }

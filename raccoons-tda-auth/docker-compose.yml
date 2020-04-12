@@ -7,7 +7,7 @@ services:
   #    expose:
   #      - "8080"
   #    environment:
-  #      TDA_AUTH_REDIRECT_URI: http://127.0.0.1:8080/auth/callback
+  #      TDA_AUTH_CLIENT_REDIRECT_URI: http://127.0.0.1:8080/auth/callback
   #      TDA_AUTH_CLIENT_ID: E90FEEDTDA
   #      TDA_AUTH_ENDPOINT_AUTH: https://auth.tdameritrade.com/auth
   #      TDA_AUTH_ENDPOINT_TOKEN: https://api.tdameritrade.com/v1/oauth2/token
@@ -15,6 +15,7 @@ services:
   #      TDA_AUTH_REDIS_URI: redis://redis:6379
   #      TDA_AUTH_REFRESH_ENABLE: true
   #      TDA_AUTH_REFRESH_FREQUENCY: 30000
+  #      TDA_AUTH_REFRESH_TIME_THRESHOLD: 180000
   #      TDA_AUTH_REFRESH_THRESHOLD: 0.25
   #      TDA_AUTH_MAPPING_CALLBACK: auth/callback
   #      TDA_AUTH_MAPPING_LOGIN: login

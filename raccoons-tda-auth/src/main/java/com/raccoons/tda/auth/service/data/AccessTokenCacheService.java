@@ -1,10 +1,11 @@
 package com.raccoons.tda.auth.service.data;
 
+import com.raccoons.tda.auth.configuration.properties.RedisProperties;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.model.token.ExpiringAccessToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -19,8 +20,8 @@ public class AccessTokenCacheService {
 
     private static final Logger logger = LogManager.getLogger(AccessTokenCacheService.class);
 
-    @Value("${tda.auth.token.expiration}")
-    private long tokenExpiration;
+    @Autowired
+    private RedisProperties redisProperties;
 
     private Map<String, ExpiringAccessToken> accessTokens;
 
@@ -82,7 +83,7 @@ public class AccessTokenCacheService {
         final String owner = accessToken.getOwner();
         if (owner != null) {
             logger.info("Storing access token for {} in cache.", owner);
-            final long tokenExpirationTime = System.currentTimeMillis() + tokenExpiration;
+            final long tokenExpirationTime = System.currentTimeMillis() + redisProperties.getTokenExpiration();
             final ExpiringAccessToken expiringAccessToken = new ExpiringAccessToken(tokenExpirationTime, accessToken);
             accessTokens.put(accessToken.getOwner(), expiringAccessToken);
         }

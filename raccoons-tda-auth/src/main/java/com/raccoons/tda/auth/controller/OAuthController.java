@@ -2,12 +2,13 @@ package com.raccoons.tda.auth.controller;
 
 import com.raccoons.tda.api.model.UserPrincipal;
 import com.raccoons.tda.auth.component.RequestId;
+import com.raccoons.tda.auth.configuration.properties.ClientProperties;
+import com.raccoons.tda.auth.configuration.properties.EndpointProperties;
 import com.raccoons.tda.auth.model.OAuth2AccessTokenResponse;
 import com.raccoons.tda.auth.service.token.AccessTokenService;
 import com.raccoons.tda.auth.service.AuthClientService;
 import com.raccoons.tda.auth.util.Digest;
 import com.raccoons.tda.auth.util.RequestUserInfo;
-import com.raccoons.tda.auth.configuration.TDAAuthConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,10 @@ public class OAuthController {
     private AccessTokenService accessTokenService;
 
     @Autowired
-    private TDAAuthConfiguration tdaAuthConfiguration;
+    private ClientProperties clientProperties;
+
+    @Autowired
+    private EndpointProperties endpointProperties;
 
     @Autowired
     private RequestId requestId;
@@ -50,11 +54,11 @@ public class OAuthController {
                 logger.info("{} Login request made \"{}\"", remoteAddress, userAgent);
             }
 
-            final UriComponentsBuilder componentsBuilder = UriComponentsBuilder.fromHttpUrl(tdaAuthConfiguration.getAuthEndpoint()).encode();
+            final UriComponentsBuilder componentsBuilder = UriComponentsBuilder.fromHttpUrl(endpointProperties.getAuth()).encode();
 
             componentsBuilder.queryParam("response_type", "code");
-            componentsBuilder.queryParam("client_id", tdaAuthConfiguration.getClientId() + "@AMER.OAUTHAP");
-            componentsBuilder.queryParam("redirect_uri", tdaAuthConfiguration.getRedirectUri());
+            componentsBuilder.queryParam("client_id", clientProperties.getId() + "@AMER.OAUTHAP");
+            componentsBuilder.queryParam("redirect_uri", clientProperties.getRedirectUri());
 
             final HttpHeaders headers = new HttpHeaders();
             final String locationURI = componentsBuilder.build().encode().toUriString();

@@ -1,6 +1,6 @@
 package com.raccoons.tda.auth.service.data;
 
-import com.raccoons.tda.auth.configuration.RedisConfiguration;
+import com.raccoons.tda.auth.configuration.properties.RedisProperties;
 import com.raccoons.tda.auth.util.Values;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.async.RedisAsyncCommands;
@@ -26,11 +26,11 @@ public class RedisService {
     private RedisKeyAsyncCommands<String, String> keyCommands;
 
     @Autowired
-    private RedisConfiguration redisConfiguration;
+    private RedisProperties redisProperties;
 
     @PostConstruct
     private void init() throws ConfigurationException {
-        final String redisClusterUri = redisConfiguration.getRedisClusterUri();
+        final String redisClusterUri = redisProperties.getClusterUri();
         if (redisClusterUri != null) {
             try {
                 logger.info("Redis Cluster URI provided, connecting...");
@@ -44,7 +44,7 @@ public class RedisService {
             }
         }
 
-        final String redisUri = redisConfiguration.getRedisUri();
+        final String redisUri = redisProperties.getUri();
         if (redisUri != null && stringCommands == null) {
             try {
                 logger.info("Redis URI provided, connecting...");

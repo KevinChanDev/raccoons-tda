@@ -1,12 +1,12 @@
 package com.raccoons.tda.auth.service.data;
 
+import com.raccoons.tda.auth.configuration.properties.RedisProperties;
 import com.raccoons.tda.auth.model.token.AccessToken;
 import com.raccoons.tda.auth.service.security.EncryptionService;
 import com.raccoons.tda.auth.util.Tokens;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,8 +19,8 @@ public class AccessTokenRedisService {
 
     private static final String ACCESS_TOKEN_KEY_PREFIX = "ACCESS.TOKEN.";
 
-    @Value("${tda.auth.redis.token.expiration}")
-    private long tokenExpiration;
+    @Autowired
+    private RedisProperties redisProperties;
 
     @Autowired
     private RedisService redisService;
@@ -58,7 +58,7 @@ public class AccessTokenRedisService {
         final String encryptedKey = encryptionService.encryptValue(accessTokenKey);
         final String wrappedAccessToken = Tokens.wrapToken(accessToken);
         final String encryptedAccessToken = encryptionService.encryptValue(wrappedAccessToken);
-        return redisService.setValue(encryptedKey, encryptedAccessToken, tokenExpiration);
+        return redisService.setValue(encryptedKey, encryptedAccessToken, redisProperties.getTokenExpiration());
     }
 
     public CompletableFuture<Long> deleteAccessToken(final String owner) {
