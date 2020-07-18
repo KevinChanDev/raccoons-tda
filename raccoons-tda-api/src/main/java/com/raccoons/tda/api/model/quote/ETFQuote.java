@@ -8,131 +8,136 @@ public class ETFQuote extends Quote {
         super(values);
     }
 
-//    {
-//        "symbol": "string",
-//        "description": "string",
-//        "bidPrice": 0,
-//        "bidSize": 0,
-//        "bidId": "string",
-//        "askPrice": 0,
-//        "askSize": int,
-//        "askId": "string",
-//        "lastPrice": 0,
-//        "lastSize": int,
-//        "lastId": "string",
-//        "openPrice": 0,
-//        "highPrice": 0,
-//        "lowPrice": 0,
-//        "closePrice": 0,
-//        "netChange": 0,
-//        "totalVolume": 0,
-//        "quoteTimeInLong": int,
-//        "tradeTimeInLong": int,
-//        "mark": 0,
-//        "exchange": "string",
-//        "exchangeName": "string",
-//        "marginable": false,
-//        "shortable": false,
-//        "volatility": 0,
-//        "digits": 0,
-//        "52WkHigh": 0,
-//        "52WkLow": 0,
-//        "peRatio": 0,
-//        "divAmount": 0,
-//        "divYield": 0,
-//        "divDate": "string",
-//        "securityStatus": "string",
-//        "regularMarketLastPrice": 0,
-//        "regularMarketLastSize": int,
-//        "regularMarketNetChange": 0,
-//        "regularMarketTradeTimeInLong": int
-//    }
-
-    public Void getBidPrice(){
-        return null;
+    public Double getBidPrice() {
+        return (Double) getValue(BID_PRICE);
     }
 
-    public Void getBidSize(){
-        return null;
+    public Double getBidSize() {
+        return (Double) getValue(BID_SIZE);
     }
 
-    public Void getBidId(){
-        return null;
+    public String getBidId() {
+        return (String) getValue(BID_ID);
     }
 
-    public Void getAskPrice(){
-        return null;
+    public Double getAskPrice() {
+        return (Double) getValue(ASK_PRICE);
     }
 
-    public Void getAskSize(){
-        return null;
+    public Double getAskSize() {
+        return (Double) getValue(ASK_SIZE);
     }
 
-    public Void getAskId(){
-        return null;
+    public String getAskId() {
+        return (String) getValue(ASK_ID);
     }
 
-    public Void getLastPrice(){
-        return null;
+    public Double getLastPrice() {
+        return (Double) getValue(LAST_PRICE);
     }
 
-    public Void getLastSize(){
-        return null;
+    public Double getLastSize() {
+        return (Double) getValue(LAST_SIZE);
     }
 
-    public Void getLastId(){
-        return null;
+    public String getLastId() {
+        return (String) getValue(LAST_ID);
     }
 
-    public Void getOpenPrice(){
-        return null;
+    public Double getOpenPrice() {
+        return (Double) getValue(OPEN_PRICE);
     }
 
-    public Void getHighPrice(){
-        return null;
+    public Double getHighPrice() {
+        return (Double) getValue(HIGH_PRICE);
     }
 
-    public Void getLowPrice(){
-        return null;
+    public Double getLowPrice() {
+        return (Double) getValue(LOW_PRICE);
     }
 
-    public Void getNetChange(){
-        return null;
+    public Double getClosePrice() {
+        return (Double) getValue(CLOSE_PRICE);
     }
 
-    public Void getTotalVolume(){
-        return null;
+    public Double getNetChange() {
+        return (Double) getValue(NET_CHANGE);
     }
 
-    public Void getQuoteTimeInLong(){
-        return null;
+    public Double getTotalVolume() {
+        return (Double) getValue(TOTAL_VOLUME);
     }
 
-    public Void getTradeTimeInLong(){
-        return null;
+    public Long getQuoteTimeInLong() {
+        return (Long) getValue(QUOTE_TIME_IN_LONG);
     }
 
-    public Void getMark(){
-        return null;
+    public Long getTradeTimeInLong() {
+        return (Long) getValue(TRADE_TIME_IN_LONG);
     }
 
-    public Void getDivDate(){
-        return null;
+    public Double getMark() {
+        return (Double) getValue(MARK);
     }
 
-    public Void getRegularMarketLastPrice(){
-        return null;
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
     }
 
-    public Void getRegularMarketLastSize(){
-        return null;
+    public boolean isMarginable() {
+        return (Boolean) getValue(MARGINABLE);
     }
 
-    public Void getRegularMarketNetChange(){
-        return null;
+    public boolean isShortable() {
+        return (Boolean) getValue(SHORTABLE);
     }
 
-    public Void getRegularMarketTradeTimeInLong(){
-        return null;
+    public Double getVolatility() {
+        return (Double) getValue(VOLATILITY);
     }
+
+    public Double getDigits() {
+        return (Double) getValue(DIGITS);
+    }
+
+    public Double get52WeekHigh() {
+        return (Double) getValue(_52_WK_HIGH);
+    }
+
+    public Double get52WeekLow() {
+        return (Double) getValue(_52_WK_LOW);
+    }
+
+    public Double getPeRatio() {
+        return (Double) getValue(PE_RATIO);
+    }
+
+    public Double getDivAmount() {
+        return (Double) getValue(DIV_AMOUNT);
+    }
+
+    public Double getDivYield() {
+        return (Double) getValue(DIV_YIELD);
+    }
+
+    public String getDivDate() {
+        return (String) getValue(DIV_DATE);
+    }
+
+    public Double getRegularMarketLastPrice() {
+        return (Double) getValue(REGULAR_MARKET_LAST_PRICE);
+    }
+
+    public Double getRegularMarketLastSize() {
+        return (Double) getValue(REGULAR_MARKET_LAST_SIZE);
+    }
+
+    public Double getRegularMarketNetChange() {
+        return (Double) getValue(REGULAR_MARKET_NET_CHANGE);
+    }
+
+    public Long getRegularMarketTradeTimeInLong() {
+        return (Long) getValue(REGULAR_MARKET_TRADE_TIME_IN_LONG);
+    }
+
 }

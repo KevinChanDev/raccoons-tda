@@ -1,18 +1,12 @@
 package com.raccoons.tda.api.client;
 
+import com.raccoons.tda.api.domain.AccountContext;
+import com.raccoons.tda.api.model.OptionChain;
+import com.raccoons.tda.api.model.quote.OptionQuote;
+import com.raccoons.tda.api.request.OptionChainRequest;
 import com.raccoons.tda.api.response.TDAResponse;
-import com.raccoons.tda.context.TDAContext;
 
-import java.util.concurrent.CompletableFuture;
+public interface OptionChainClient {
 
-public class OptionChainClient extends BaseClient {
-
-    public OptionChainClient(TDAContext tdaContext) {
-        super(tdaContext);
-    }
-
-    public CompletableFuture<TDAResponse> getOptionChain(){
-        return null;
-    }
-
+    TDAResponse<OptionChain> getOptionChain(final AccountContext accountContext, final OptionChainRequest request);
 }

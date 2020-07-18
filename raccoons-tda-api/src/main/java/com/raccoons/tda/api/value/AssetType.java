@@ -7,6 +7,9 @@ public enum AssetType {
     @JsonProperty("EQUITY")
     EQUITY,
 
+    @JsonProperty("ETF")
+    ETF,
+
     @JsonProperty("OPTION")
     OPTION,
 
@@ -23,5 +26,21 @@ public enum AssetType {
     FIXED_INCOME,
 
     @JsonProperty("CURRENCY")
-    CURRENCY
+    CURRENCY,
+
+    @JsonProperty("BOND")
+    BOND,
+
+    @JsonProperty("FUTURE")
+    FUTURE,
+
+    @JsonProperty("FUTURE_OPTION")
+    FUTURE_OPTION,
+
+    @JsonProperty("INDICATOR")
+    INDICATOR,
+
+    @JsonProperty("UNKNOWN")
+    UNKNOWN;
+
 }

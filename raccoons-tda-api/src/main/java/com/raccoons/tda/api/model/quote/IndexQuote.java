@@ -8,63 +8,52 @@ public class IndexQuote extends Quote {
         super(values);
     }
 
-//    {
-//            "symbol": "string",
-//            "description": "string",
-//            "lastPrice": 0,
-//            "openPrice": 0,
-//            "highPrice": 0,
-//            "lowPrice": 0,
-//            "closePrice": 0,
-//            "netChange": 0,
-//            "totalVolume": 0,
-//            "tradeTimeInLong": 0,
-//            "exchange": "string",
-//            "exchangeName": "string",
-//            "digits": 0,
-//            "52WkHigh": 0,
-//            "52WkLow": 0,
-//            "securityStatus": "string"
-//    }
-
-    public Void getLastPrice() {
-        return null;
+    public Double getLastPrice() {
+        return (Double) getValue(LAST_PRICE);
     }
 
-    public Void getOpenPrice() {
-        return null;
+    public Double getOpenPrice() {
+        return (Double) getValue(OPEN_PRICE);
     }
 
-    public Void getHighPrice() {
-        return null;
+    public Double getHighPrice() {
+        return (Double) getValue(HIGH_PRICE);
     }
 
-    public Void getLowPrice() {
-        return null;
+    public Double getLowPrice() {
+        return (Double) getValue(LOW_PRICE);
     }
 
-    public Void getNetChange() {
-        return null;
+    public Double getClosePrice() {
+        return (Double) getValue(CLOSE_PRICE);
     }
 
-    public Void getTotalVolume() {
-        return null;
+    public Double getNetChange() {
+        return (Double) getValue(NET_CHANGE);
     }
 
-    public Void getTradeTimeInLong() {
-        return null;
+    public Double getTotalVolume() {
+        return (Double) getValue(TOTAL_VOLUME);
     }
 
-    public Void getDigits() {
-        return null;
+    public Long getTradeTimeInLong() {
+        return (Long) getValue(TRADE_TIME_IN_LONG);
     }
 
-    public Void get52WkHigh() {
-        return null;
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
     }
 
-    public Void get52WkLow() {
-        return null;
+    public Double getDigits() {
+        return (Double) getValue(DIGITS);
+    }
+
+    public Double get52WeekHigh() {
+        return (Double) getValue(_52_WK_HIGH);
+    }
+
+    public Double get52WeekLow() {
+        return (Double) getValue(_52_WK_LOW);
     }
 
 }

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.raccoons.tda.api.model.Instrument;
+import com.raccoons.tda.api.model.instrument.Instrument;
 
 import java.io.IOException;
 

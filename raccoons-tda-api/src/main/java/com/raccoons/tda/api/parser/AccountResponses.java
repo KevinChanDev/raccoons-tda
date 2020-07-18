@@ -1,8 +1,8 @@
 package com.raccoons.tda.api.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.raccoons.tda.api.model.Account;
-import com.raccoons.tda.api.model.Accounts;
+import com.raccoons.tda.api.model.account.Account;
+import com.raccoons.tda.api.model.account.Accounts;
 import com.raccoons.tda.api.response.AccountResponse;
 import com.raccoons.tda.api.response.AccountsResponse;
 import com.raccoons.tda.api.response.TDAResponseStatus;

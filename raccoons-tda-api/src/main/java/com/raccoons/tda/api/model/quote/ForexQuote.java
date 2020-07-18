@@ -8,106 +8,84 @@ public class ForexQuote extends Quote {
         super(values);
     }
 
-    //    {
-//            "symbol": "string",
-//            "bidPriceInDouble": 0,
-//            "askPriceInDouble": 0,
-//            "lastPriceInDouble": 0,
-//            "highPriceInDouble": 0,
-//            "lowPriceInDouble": 0,
-//            "closePriceInDouble": 0,
-//            "exchange": "string",
-//            "description": "string",
-//            "openPriceInDouble": 0,
-//            "changeInDouble": 0,
-//            "percentChange": 0,
-//            "exchangeName": "string",
-//            "digits": 0,
-//            "securityStatus": "string",
-//            "tick": 0,
-//            "tickAmount": 0,
-//            "product": "string",
-//            "tradingHours": "string",
-//            "isTradable": false,
-//            "marketMaker": "string",
-//            "52WkHighInDouble": 0,
-//            "52WkLowInDouble": 0,
-//            "mark": 0
-//    }
-
-    public Void getBidPriceInDouble() {
-        return null;
+    public Double getBidPriceInDouble() {
+        return (Double) getValue(BID_PRICE_IN_DOUBLE);
     }
 
-    public Void getAskPriceInDouble() {
-        return null;
+    public Double getAskPriceInDouble() {
+        return (Double) getValue(ASK_PRICE_IN_DOUBLE);
     }
 
-    public Void getLastPriceInDouble() {
-        return null;
+    public Double getLastPriceInDouble() {
+        return (Double) getValue(LAST_PRICE_IN_DOUBLE);
     }
 
-    public Void getHighPriceInDouble() {
-        return null;
+    public Double getHighPriceInDouble() {
+        return (Double) getValue(HIGH_PRICE_IN_DOUBLE);
     }
 
-    public Void getLowPriceInDouble() {
-        return null;
+    public Double getLowPriceInDouble() {
+        return (Double) getValue(LOW_PRICE_IN_DOUBLE);
     }
 
-    public Void getClosePriceInDouble() {
-        return null;
+    public Double getClosePriceInDouble() {
+        return (Double) getValue(CLOSE_PRICE_IN_DOUBLE);
     }
 
-    public Void getOpenPriceInDouble() {
-        return null;
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
     }
 
-    public Void getChangeInDouble() {
-        return null;
+    public Double getOpenPriceInDouble() {
+        return (Double) getValue(OPEN_PRICE_IN_DOUBLE);
     }
 
-    public Void getPercentChange() {
-        return null;
+    public Double getChangeInDouble() {
+        return (Double) getValue(CHANGE_IN_DOUBLE);
     }
 
-    public Void getDigits() {
-        return null;
+    public Double getPercentChange() {
+        return (Double) getValue(PERCENT_CHANGE);
     }
 
-    public Void getTick() {
-        return null;
+    public Double getDigits() {
+        return (Double) getValue(DIGITS);
     }
 
-    public Void getTickAmount() {
-        return null;
+    public Double getTick() {
+        return (Double) getValue(TICK);
     }
 
-    public Void getProduct() {
-        return null;
+    public Double getTickAmount() {
+        return (Double) getValue(TICK_AMOUNT);
     }
 
-    public Void getTradingHours() {
-        return null;
+    public String getProduct() {
+        return (String) getValue(PRODUCT);
     }
 
-    public Void getIsTradable() {
-        return null;
+    public String getTradingHours() {
+        return (String) getValue(TRADING_HOURS);
     }
 
-    public Void getMarketMaker() {
-        return null;
+    public boolean isTradable() {
+        return (Boolean) getValue(IS_TRADABLE);
     }
 
-    public Void get52WkHighInDouble() {
-        return null;
+    public String getMarketMaker() {
+        return (String) getValue(MARKET_MAKER);
     }
 
-    public Void get52WkLowInDouble() {
-        return null;
+    public Double get52WeekHighInDouble() {
+        return (Double) getValue(ASK_PRICE_IN_DOUBLE);
     }
 
-    public Void getMark() {
-        return null;
+    public Double get52WeekLowInDouble() {
+        return (Double) getValue(ASK_PRICE_IN_DOUBLE);
     }
+
+    public Double getMark() {
+        return (Double) getValue(MARK);
+    }
+
 }

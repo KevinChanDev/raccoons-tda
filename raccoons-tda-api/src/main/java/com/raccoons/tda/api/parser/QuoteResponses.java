@@ -13,17 +13,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class QuoteResponses {
+public class QuoteResponses extends ResponseParser {
 
-    private static ObjectMapper objectMapper;
-    private static TypeReference MAP_REFERENCE = new TypeReference<Map<String, Map<String, Object>>>() {
+    private static final TypeReference<Map<String, Map<String, Object>>> MAP_REFERENCE
+            = new TypeReference<Map<String, Map<String, Object>>>() {
     };
-
-    private static ObjectMapper getObjectMapper() {
-        if (objectMapper == null)
-            objectMapper = new ObjectMapper();
-        return objectMapper;
-    }
 
     public static QuoteResponse quoteResponse(final TDAHttpResponse tdaHttpResponse) {
         final String data = new String(tdaHttpResponse.getBody());

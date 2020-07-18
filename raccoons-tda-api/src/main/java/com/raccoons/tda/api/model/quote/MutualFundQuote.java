@@ -8,67 +8,56 @@ public class MutualFundQuote extends Quote {
         super(values);
     }
 
-//    {
-//            "symbol": "string",
-//            "description": "string",
-//            "closePrice": 0,
-//            "netChange": 0,
-//            "totalVolume": 0,
-//            "tradeTimeInLong": 0,
-//            "exchange": "string",
-//            "exchangeName": "string",
-//            "digits": 0,
-//            "52WkHigh": 0,
-//            "52WkLow": 0,
-//            "nAV": 0,
-//            "peRatio": 0,
-//            "divAmount": 0,
-//            "divYield": 0,
-//            "divDate": "string",
-//            "securityStatus": "string"
-//    }
-
-    public Double getNetChange() {
-        return null;
+    public Double getClosePrice() {
+        return (Double) getValue(CLOSE_PRICE);
     }
 
-    public Long getTotalVolume() {
-        return null;
+    public Double getNetChange() {
+        return (Double) getValue(NET_CHANGE);
+    }
+
+    public Double getTotalVolume() {
+        return (Double) getValue(TOTAL_VOLUME);
     }
 
     public Long getTradeTimeInLong() {
-        return null;
+        return (Long) getValue(TRADE_TIME_IN_LONG);
     }
 
-    public Integer getDigits() {
-        return null;
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
+    }
+
+    public Double getDigits() {
+        return (Double) getValue(DIGITS);
     }
 
     public Double get52WeekHigh() {
-        return null;
+        return (Double) getValue(_52_WK_HIGH);
     }
 
     public Double get52WeekLow() {
-        return null;
+        return (Double) getValue(_52_WK_LOW);
     }
 
-    public Double getNAV() {
-        return null;
+    public Double getNav() {
+        return (Double) getValue(NAV);
     }
 
     public Double getPeRatio() {
-        return null;
+        return (Double) getValue(PE_RATIO);
     }
 
-    public Double getDividendAmount() {
-        return null;
+    public Double getDivAmount() {
+        return (Double) getValue(DIV_AMOUNT);
     }
 
-    public Double getDividendYield() {
-        return null;
+    public Double getDivYield() {
+        return (Double) getValue(DIV_YIELD);
     }
 
-    public String getDividendDate() {
-        return null;
+    public String getDivDate() {
+        return (String) getValue(DIV_DATE);
     }
+
 }

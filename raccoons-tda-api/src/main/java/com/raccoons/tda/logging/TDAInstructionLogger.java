@@ -6,4 +6,5 @@ public interface TDAInstructionLogger {
 
     void log(Map<String, Object> values);
     boolean isEnabled();
+
 }

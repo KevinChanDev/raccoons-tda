@@ -3,13 +3,24 @@ package com.raccoons.tda.api.request;
 public class TDARequest {
 
     private String requestId;
-    private ResponseType responseType;
+    private TDAResponseType TDAResponseType;
 
-    public ResponseType getResponseType() {
-        return responseType;
+    public TDAResponseType getTDAResponseType() {
+        return TDAResponseType;
     }
 
     public String getRequestId() {
         return requestId;
     }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+
+
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.raccoons.tda.api.model.quote;
 
+import javax.management.monitor.GaugeMonitor;
 import java.util.Map;
 
 public class FutureOptionQuote extends Quote {
@@ -8,131 +9,135 @@ public class FutureOptionQuote extends Quote {
         super(values);
     }
 
-//    {
-//            "symbol": "string",
-//            "bidPriceInDouble": 0,
-//            "askPriceInDouble": 0,
-//            "lastPriceInDouble": 0,
-//            "highPriceInDouble": 0,
-//            "lowPriceInDouble": 0,
-//            "closePriceInDouble": 0,
-//            "description": "string",
-//            "openPriceInDouble": 0,
-//            "netChangeInDouble": 0,
-//            "openInterest": 0,
-//            "exchangeName": "string",
-//            "securityStatus": "string",
-//            "volatility": 0,
-//            "moneyIntrinsicValueInDouble": 0,
-//            "multiplierInDouble": 0,
-//            "digits": 0,
-//            "strikePriceInDouble": 0,
-//            "contractType": "string",
-//            "underlying": "string",
-//            "timeValueInDouble": 0,
-//            "deltaInDouble": 0,
-//            "gammaInDouble": 0,
-//            "thetaInDouble": 0,
-//            "vegaInDouble": 0,
-//            "rhoInDouble": 0,
-//            "mark": 0,
-//            "tick": 0,
-//            "tickAmount": 0,
-//            "futureIsTradable": false,
-//            "futureTradingHours": "string",
-//            "futurePercentChange": 0,
-//            "futureIsActive": false,
-//            "futureExpirationDate": 0,
-//            "expirationType": "string",
-//            "exerciseType": "string",
-//            "inTheMoney": false
-//    }
-
-    public Void getBidPriceInDouble(){
-        return null;
+    public Double getNetChangeInDouble() {
+        return (Double) getValue(NET_CHANGE_IN_DOUBLE);
     }
 
-    public Void getAskPriceInDouble(){
-        return null;
+    public Double getVolatility() {
+        return (Double) getValue(VOLATILITY);
     }
 
-    public Void getLastPriceInDouble(){
-        return null;
+    public Double getMoneyIntrinsicValueInDouble() {
+        return (Double) getValue(MONEY_INTRINSIC_VALUE_IN_DOUBLE);
     }
 
-    public Void getHighPriceInDouble(){
-        return null;
+    public Double getMultiplierInDouble() {
+        return (Double) getValue(MULTIPLIER_IN_DOUBLE);
     }
 
-    public Void getLowPriceInDouble(){
-        return null;
+    public Double getDigits() {
+        return (Double) getValue(DIGITS);
     }
 
-    public Void getClosePriceInDouble(){
-        return null;
+    public Double getStrikePriceInDouble() {
+        return (Double) getValue(STRIKE_PRICE_IN_DOUBLE);
     }
 
-    public Void getOpenPriceInDouble(){
-        return null;
+    public String getContractType() {
+        return (String) getValue(CONTRACT_TYPE);
     }
 
-    public Void getNetChangeInDouble(){
-        return null;
+    public String getUnderlying() {
+        return (String) getValue(UNDERLYING);
     }
 
-    public Void getOpenInterest(){
-        return null;
+    public Double getTimeValueInDouble() {
+        return (Double) getValue(TIME_VALUE_IN_DOUBLE);
     }
 
-    public Void getVolatility(){
-        return null;
+    public Double getDeltaInDouble() {
+        return (Double) getValue(DELTA_IN_DOUBLE);
     }
 
-    public Void getMoneyIntrinsicValueInDouble(){
-        return null;
+    public Double getGammaInDouble() {
+        return (Double) getValue(GAMMA_IN_DOUBLE);
     }
 
-    public Void getMultiplierInDouble(){
-        return null;
+    public Double getThetaInDouble() {
+        return (Double) getValue(THETA_IN_DOUBLE);
     }
 
-    public Void getDigits(){
-        return null;
+    public Double getVegaInDouble() {
+        return (Double) getValue(VEGA_IN_DOUBLE);
     }
 
-    public Void getStrikePriceInDouble(){
-        return null;
+    public Double getRhoInDouble() {
+        return (Double) getValue(RHO_IN_DOUBLE);
     }
 
-    public Void getContractType(){
-        return null;
+    public String getExpirationType() {
+        return (String) getValue(EXPIRATION_TYPE);
     }
 
-    public Void getUnderlying(){
-        return null;
+    public String getExerciseType() {
+        return (String) getValue(EXERCISE_TYPE);
     }
 
-    public Void getTimeValueInDouble(){
-        return null;
+    public Double getInTheMoney() {
+        return (Double) getValue(IN_THE_MONEY);
     }
 
-    public Void getDeltaInDouble(){
-        return null;
+    public Double getFuturePercentChange() {
+        return (Double) getValue(FUTURE_PERCENT_CHANGE);
     }
 
-    public Void getFutureExpirationDate(){
-        return null;
+    public Double getOpenInterest() {
+        return (Double) getValue(OPEN_INTEREST);
     }
 
-    public Void getExpirationType(){
-        return null;
+    public String getFutureTradingHours() {
+        return (String) getValue(FUTURE_TRADING_HOURS);
     }
 
-    public Void getExerciseType(){
-        return null;
+    public Double getFutureIsTradable() {
+        return (Double) getValue(FUTURE_IS_TRADABLE);
     }
 
-    public Void getInTheMoney(){
-        return null;
+    public Double getFutureIsActive() {
+        return (Double) getValue(FUTURE_IS_ACTIVE);
+    }
+
+    public String getFutureExpirationDate() {
+        return (String) getValue(FUTURE_EXPIRATION_DATE);
+    }
+
+    public Double getBidPriceInDouble() {
+        return (Double) getValue(BID_PRICE_IN_DOUBLE);
+    }
+
+    public Double getAskPriceInDouble() {
+        return (Double) getValue(ASK_PRICE_IN_DOUBLE);
+    }
+
+    public Double getLastPriceInDouble() {
+        return (Double) getValue(LAST_PRICE_IN_DOUBLE);
+    }
+
+    public Double getHighPriceInDouble() {
+        return (Double) getValue(HIGH_PRICE_IN_DOUBLE);
+    }
+
+    public Double getLowPriceInDouble() {
+        return (Double) getValue(LOW_PRICE_IN_DOUBLE);
+    }
+
+    public Double getClosePriceInDouble() {
+        return (Double) getValue(CLOSE_PRICE_IN_DOUBLE);
+    }
+
+    public Double getOpenPriceInDouble() {
+        return (Double) getValue(OPEN_PRICE_IN_DOUBLE);
+    }
+
+    public Double getTick() {
+        return (Double) getValue(TICK);
+    }
+
+    public Double getTickAmount() {
+        return (Double) getValue(TICK_AMOUNT);
+    }
+
+    public Double getMark() {
+        return (Double) getValue(MARK);
     }
 }

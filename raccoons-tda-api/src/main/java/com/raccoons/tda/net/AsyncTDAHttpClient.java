@@ -69,12 +69,62 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> get(final String uri, final Map<String, String> headers) {
-        return get(uri, headers, null);
+    public TDAHttpResponse get(String uri, Map<String, String> headers) {
+        return null;
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> get(final String uri, final Map<String, String> headers, final Map<String, String> parameters) {
+    public TDAHttpResponse get(String uri, Map<String, String> headers, Map<String, String> parameters) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse post(String uri, Map<String, String> headers) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse post(String uri, Map<String, String> headers, Map<String, Object> data) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse post(String uri, Map<String, String> headers, byte[] body) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse put(String uri, Map<String, String> headers) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse put(String uri, Map<String, String> headers, byte[] body) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse delete(String uri, Map<String, String> headers) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse postJson(String uri, Map<String, String> headers, String content) {
+        return null;
+    }
+
+    @Override
+    public TDAHttpResponse putJson(String uri, Map<String, String> headers, String content) {
+        return null;
+    }
+
+    @Override
+    public CompletableFuture<TDAHttpResponse> getAsync(final String uri, final Map<String, String> headers) {
+        return getAsync(uri, headers, null);
+    }
+
+    @Override
+    public CompletableFuture<TDAHttpResponse> getAsync(final String uri, final Map<String, String> headers, final Map<String, String> parameters) {
         final long httpRequestId = requestId.incrementAndGet();
 
         URI requestUri = null;
@@ -107,12 +157,12 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> post(final String uri, final Map<String, String> headers) {
-        return post(uri, headers, new byte[0]);
+    public CompletableFuture<TDAHttpResponse> postAsync(final String uri, final Map<String, String> headers) {
+        return postAsync(uri, headers, new byte[0]);
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> post(final String uri, final Map<String, String> headers, final Map<String, Object> data) {
+    public CompletableFuture<TDAHttpResponse> postAsync(final String uri, final Map<String, String> headers, final Map<String, Object> data) {
         final long httpRequestId = requestId.incrementAndGet();
 
         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().POST(ofFormData(data)).uri(URI.create(uri));
@@ -130,7 +180,7 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> post(final String uri, final Map<String, String> headers, final byte[] body) {
+    public CompletableFuture<TDAHttpResponse> postAsync(final String uri, final Map<String, String> headers, final byte[] body) {
         final long httpRequestId = requestId.incrementAndGet();
 
         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().POST(
@@ -151,12 +201,12 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> put(final String uri, final Map<String, String> headers) {
-        return put(uri, headers, new byte[0]);
+    public CompletableFuture<TDAHttpResponse> putAsync(final String uri, final Map<String, String> headers) {
+        return putAsync(uri, headers, new byte[0]);
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> put(final String uri, final Map<String, String> headers, final byte[] body) {
+    public CompletableFuture<TDAHttpResponse> putAsync(final String uri, final Map<String, String> headers, final byte[] body) {
         final long httpRequestId = requestId.incrementAndGet();
 
         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().PUT(
@@ -177,7 +227,7 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> delete(final String uri, final Map<String, String> headers) {
+    public CompletableFuture<TDAHttpResponse> deleteAsync(final String uri, final Map<String, String> headers) {
         final long httpRequestId = requestId.incrementAndGet();
 
         final HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().DELETE().uri(URI.create(uri));
@@ -195,17 +245,17 @@ public class AsyncTDAHttpClient implements TDAHttpClient {
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> postJson(final String uri, final Map<String, String> headers, final String content) {
+    public CompletableFuture<TDAHttpResponse> postJsonAsync(final String uri, final Map<String, String> headers, final String content) {
         final Map<String, String> jsonHeaders = new HashMap<>(headers);
         jsonHeaders.put(CONTENT_TYPE, APPLICATION_JSON);
-        return post(uri, jsonHeaders, content.getBytes());
+        return postAsync(uri, jsonHeaders, content.getBytes());
     }
 
     @Override
-    public CompletableFuture<TDAHttpResponse> putJson(final String uri, final Map<String, String> headers, final String content) {
+    public CompletableFuture<TDAHttpResponse> putJsonAsync(final String uri, final Map<String, String> headers, final String content) {
         final Map<String, String> jsonHeaders = new HashMap<>(headers);
         jsonHeaders.put(CONTENT_TYPE, APPLICATION_JSON);
-        return put(uri, jsonHeaders, content.getBytes());
+        return putAsync(uri, jsonHeaders, content.getBytes());
     }
 
     private CompletableFuture<TDAHttpResponse> sendAsync(final HttpRequest httpRequest, final long requestId) {

@@ -8,96 +8,140 @@ public class OptionQuote extends Quote {
         super(values);
     }
 
-//    {
-//        "symbol": "string",
-//        "description": "string",
-//        "bidPrice": 0,
-//        "bidSize": 0,
-//        "askPrice": 0,
-//        "askSize": 0,
-//        "lastPrice": 0,
-//        "lastSize": 0,
-//        "openPrice": 0,
-//        "highPrice": 0,
-//        "lowPrice": 0,
-//        "closePrice": 0,
-//        "netChange": 0,
-//        "totalVolume": 0,
-//        "quoteTimeInLong": 0,
-//        "tradeTimeInLong": 0,
-//        "mark": 0,
-//        "openInterest": 0,
-//        "volatility": 0,
-//        "moneyIntrinsicValue": 0,
-//        "multiplier": 0,
-//        "strikePrice": 0,
-//        "contractType": "string",
-//        "underlying": "string",
-//        "timeValue": 0,
-//        "deliverables": "string",
-//        "delta": 0,
-//        "gamma": 0,
-//        "theta": 0,
-//        "vega": 0,
-//        "rho": 0,
-//        "securityStatus": "string",
-//        "theoreticalOptionValue": 0,
-//        "underlyingPrice": 0,
-//        "uvExpirationType": "string",
-//        "exchange": "string",
-//        "exchangeName": "string",
-//        "settlementType": "string"
-//    }
-
-    public Double getBidPrice() {
-        return null;
+    public Double getOpenInterest() {
+        return (Double) getValue(OPEN_INTEREST);
     }
 
-    public Double getAskPrice() {
-        return null;
+    public Double getMoneyIntrinsicValue() {
+        return (Double) getValue(MONEY_INTRINSIC_VALUE);
     }
 
-    public Integer getBidSize() {
-        return null;
+    public Double getMultiplier() {
+        return (Double) getValue(MULTIPLIER);
     }
 
-    public Integer getAskSize() {
-        return null;
+    public Double getStrikePrice() {
+        return (Double) getValue(STRIKE_PRICE);
     }
 
-    public Double getLastPrice() {
-        return null;
+    public String getContractType() {
+        return (String) getValue(CONTRACT_TYPE);
     }
 
-    public Integer getLastSize() {
-        return null;
+    public String getUnderlying() {
+        return (String) getValue(UNDERLYING);
+    }
+
+    public Double getTimeValue() {
+        return (Double) getValue(TIME_VALUE);
+    }
+
+    public String getDeliverables() {
+        return (String) getValue(DELIVERABLES);
     }
 
     public Double getDelta() {
-        return null;
+        return (Double) getValue(DELTA);
     }
 
     public Double getGamma() {
-        return null;
+        return (Double) getValue(GAMMA);
     }
 
     public Double getTheta() {
-        return null;
+        return (Double) getValue(THETA);
     }
 
     public Double getVega() {
-        return null;
+        return (Double) getValue(VEGA);
     }
 
     public Double getRho() {
-        return null;
+        return (Double) getValue(RHO);
     }
 
-    public Long getLastTime() {
-        return null;
+    public Double getTheoreticalOptionValue() {
+        return (Double) getValue(THEORETICAL_OPTION_VALUE);
     }
 
-    public Long getTradeTime() {
-        return null;
+    public Double getUnderlyingPrice() {
+        return (Double) getValue(UNDERLYING_PRICE);
     }
+
+    public String getUvExpirationType() {
+        return (String) getValue(UV_EXPIRATION_TYPE);
+    }
+
+    public String getSettlementType() {
+        return (String) getValue(SETTLEMENT_TYPE);
+    }
+
+    public Double getBidPrice() {
+        return (Double) getValue(BID_PRICE);
+    }
+
+    public Double getBidSize() {
+        return (Double) getValue(BID_SIZE);
+    }
+
+    public Double getAskPrice() {
+        return (Double) getValue(ASK_PRICE);
+    }
+
+    public Double getAskSize() {
+        return (Double) getValue(ASK_SIZE);
+    }
+
+    public Double getLastPrice() {
+        return (Double) getValue(LAST_PRICE);
+    }
+
+    public Double getLastSize() {
+        return (Double) getValue(LAST_SIZE);
+    }
+
+    public Double getOpenPrice() {
+        return (Double) getValue(OPEN_PRICE);
+    }
+
+    public Double getHighPrice() {
+        return (Double) getValue(HIGH_PRICE);
+    }
+
+    public Double getLowPrice() {
+        return (Double) getValue(LOW_PRICE);
+    }
+
+    public Double getClosePrice() {
+        return (Double) getValue(CLOSE_PRICE);
+    }
+
+    public Double getNetChange() {
+        return (Double) getValue(NET_CHANGE);
+    }
+
+    public Double getTotalVolume() {
+        return (Double) getValue(TOTAL_VOLUME);
+    }
+
+    public Long getQuoteTimeInLong() {
+        return (Long) getValue(QUOTE_TIME_IN_LONG);
+    }
+
+    public Long getTradeTimeInLong() {
+        return (Long) getValue(TRADE_TIME_IN_LONG);
+    }
+
+    public Double getMark() {
+        return (Double) getValue(MARK);
+    }
+
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
+    }
+
+    public Double getVolatility() {
+        return (Double) getValue(VOLATILITY);
+    }
+
 }

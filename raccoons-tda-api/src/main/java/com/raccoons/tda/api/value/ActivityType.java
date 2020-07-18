@@ -2,7 +2,7 @@ package com.raccoons.tda.api.value;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public enum  ActivityType {
+public enum ActivityType {
 
     @JsonProperty("EXECUTION")
     EXECUTION,

@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class TDAHttpResponse {
 
-    private final int state;
+    private final State state;
     private final int statusCode;
     private final Map<String, String> headers;
     private final byte[] body;
@@ -12,7 +12,7 @@ public class TDAHttpResponse {
     private final long endTime;
     private final long requestId;
 
-    public TDAHttpResponse(int state, int statusCode, Map<String, String> headers, byte[] body, long requestId,
+    public TDAHttpResponse(State state, int statusCode, Map<String, String> headers, byte[] body, long requestId,
                            long startTime, long endTime) {
         this.state = state;
         this.statusCode = statusCode;
@@ -43,7 +43,7 @@ public class TDAHttpResponse {
         return requestId;
     }
 
-    public int getState() {
+    public State getState() {
         return state;
     }
 
@@ -55,11 +55,10 @@ public class TDAHttpResponse {
         return endTime;
     }
 
-    public static class State {
-
-        public static final int COMPLETED = 0;
-        public static final int TIMED_OUT = 1;
-
+    public enum State {
+        COMPLETED,
+        TIMED_OUT,
+        ERROR
     }
 
 }

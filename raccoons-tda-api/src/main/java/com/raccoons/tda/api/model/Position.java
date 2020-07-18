@@ -1,6 +1,7 @@
 package com.raccoons.tda.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.raccoons.tda.api.model.instrument.Instrument;
 
 public class Position {
 

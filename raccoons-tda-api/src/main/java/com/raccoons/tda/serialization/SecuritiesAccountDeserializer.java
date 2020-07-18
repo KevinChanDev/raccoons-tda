@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.raccoons.tda.api.model.SecuritiesAccount;
+import com.raccoons.tda.api.model.account.SecuritiesAccount;
 
 import java.io.IOException;
 

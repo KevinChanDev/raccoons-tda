@@ -1,21 +1,13 @@
 package com.raccoons.tda.api.client;
 
+import com.raccoons.tda.api.domain.AccountContext;
+import com.raccoons.tda.api.model.instrument.Instrument;
+import com.raccoons.tda.api.model.instrument.Instruments;
 import com.raccoons.tda.api.response.TDAResponse;
-import com.raccoons.tda.context.TDAContext;
 
-import java.util.concurrent.CompletableFuture;
+public interface InstrumentClient {
 
-public class InstrumentClient extends BaseClient {
+    TDAResponse<Instrument> getInstrument(final AccountContext accountContext, final String cusip);
+    TDAResponse<Instruments> searchInstrument(final AccountContext accountContext, final String symbol, final String projection);
 
-    public InstrumentClient(TDAContext tdaContext) {
-        super(tdaContext);
-    }
-
-    public CompletableFuture<TDAResponse> searchInstruments() {
-        return null;
-    }
-
-    public CompletableFuture<TDAResponse> getInstrument() {
-        return null;
-    }
 }

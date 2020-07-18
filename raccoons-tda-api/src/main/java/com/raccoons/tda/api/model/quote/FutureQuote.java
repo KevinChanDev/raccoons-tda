@@ -8,124 +8,108 @@ public class FutureQuote extends Quote {
         super(values);
     }
 
-//    {
-//            "symbol": "string",
-//            "bidPriceInDouble": 0,
-//            "askPriceInDouble": 0,
-//            "lastPriceInDouble": 0,
-//            "bidId": "string",
-//            "askId": "string",
-//            "highPriceInDouble": 0,
-//            "lowPriceInDouble": 0,
-//            "closePriceInDouble": 0,
-//            "exchange": "string",
-//            "description": "string",
-//            "lastId": "string",
-//            "openPriceInDouble": 0,
-//            "changeInDouble": 0,
-//            "futurePercentChange": 0,
-//            "exchangeName": "string",
-//            "securityStatus": "string",
-//            "openInterest": 0,
-//            "mark": 0,
-//            "tick": 0,
-//            "tickAmount": 0,
-//            "product": "string",
-//            "futurePriceFormat": "string",
-//            "futureTradingHours": "string",
-//            "futureIsTradable": false,
-//            "futureMultiplier": 0,
-//            "futureIsActive": false,
-//            "futureSettlementPrice": 0,
-//            "futureActiveSymbol": "string",
-//            "futureExpirationDate": "string"
-//    }
-
-    public Double getAskPrice() {
-        return null;
-    }
-
-    public Double getBidPrice() {
-        return null;
+    public String getExchange() {
+        return (String) getValue(EXCHANGE);
     }
 
     public String getBidId() {
-        return null;
+        return (String) getValue(BID_ID);
     }
 
     public String getAskId() {
-        return null;
-    }
-
-    public Double getHighPrice() {
-        return null;
-    }
-
-    public Double getLowPrice() {
-        return null;
+        return (String) getValue(ASK_ID);
     }
 
     public String getLastId() {
-        return null;
+        return (String) getValue(LAST_ID);
     }
 
-    public Double getOpenPrice() {
-        return null;
-    }
-
-    public Double getFuturePercentageChange() {
-        return null;
+    public Double getFuturePercentChange() {
+        return (Double) getValue(FUTURE_PERCENT_CHANGE);
     }
 
     public Double getOpenInterest() {
-        return null;
-    }
-
-    public Double getMark() {
-        return null;
-    }
-
-    public Double getTick() {
-        return null;
-    }
-
-    public Double getTickAmount() {
-        return null;
-    }
-
-    public String getProduct() {
-        return null;
+        return (Double) getValue(OPEN_INTEREST);
     }
 
     public String getFuturePriceFormat() {
-        return null;
+        return (String) getValue(FUTURE_PRICE_FORMAT);
     }
 
     public String getFutureTradingHours() {
-        return null;
+        return (String) getValue(FUTURE_TRADING_HOURS);
     }
 
-    public boolean isFutureTradable() {
-        return false;
+    public Double getFutureIsTradable() {
+        return (Double) getValue(FUTURE_IS_TRADABLE);
     }
 
-    public boolean isFutureActive() {
-        return false;
+    public Double getFutureMultiplier() {
+        return (Double) getValue(FUTURE_MULTIPLIER);
     }
 
-    public String getFutureMultiplier() {
-        return null;
+    public Double getFutureIsActive() {
+        return (Double) getValue(FUTURE_IS_ACTIVE);
     }
 
     public Double getFutureSettlementPrice() {
-        return null;
+        return (Double) getValue(FUTURE_SETTLEMENT_PRICE);
     }
 
     public String getFutureActiveSymbol() {
-        return null;
+        return (String) getValue(FUTURE_ACTIVE_SYMBOL);
     }
 
     public String getFutureExpirationDate() {
-        return null;
+        return (String) getValue(FUTURE_EXPIRATION_DATE);
     }
+
+    public Double getBidPriceInDouble() {
+        return (Double) getValue(BID_PRICE_IN_DOUBLE);
+    }
+
+    public Double getAskPriceInDouble() {
+        return (Double) getValue(ASK_PRICE_IN_DOUBLE);
+    }
+
+    public Double getLastPriceInDouble() {
+        return (Double) getValue(LAST_PRICE_IN_DOUBLE);
+    }
+
+    public Double getHighPriceInDouble() {
+        return (Double) getValue(HIGH_PRICE_IN_DOUBLE);
+    }
+
+    public Double getLowPriceInDouble() {
+        return (Double) getValue(LOW_PRICE_IN_DOUBLE);
+    }
+
+    public Double getClosePriceInDouble() {
+        return (Double) getValue(CLOSE_PRICE_IN_DOUBLE);
+    }
+
+    public Double getOpenPriceInDouble() {
+        return (Double) getValue(OPEN_PRICE_IN_DOUBLE);
+    }
+
+    public Double getChangeInDouble() {
+        return (Double) getValue(CHANGE_IN_DOUBLE);
+    }
+
+    public Double getTick() {
+        return (Double) getValue(TICK);
+    }
+
+    public Double getTickAmount() {
+        return (Double) getValue(TICK_AMOUNT);
+    }
+
+    public String getProduct() {
+        return (String) getValue(PRODUCT);
+    }
+
+    public Double getMark() {
+        return (Double) getValue(MARK);
+    }
+
 }
